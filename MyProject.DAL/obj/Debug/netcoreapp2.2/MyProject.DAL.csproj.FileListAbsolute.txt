@@ -1,0 +1,10 @@
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\bin\Debug\netcoreapp2.2\MyProject.DAL.deps.json
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\bin\Debug\netcoreapp2.2\MyProject.DAL.runtimeconfig.json
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\bin\Debug\netcoreapp2.2\MyProject.DAL.runtimeconfig.dev.json
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\bin\Debug\netcoreapp2.2\MyProject.DAL.dll
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\bin\Debug\netcoreapp2.2\MyProject.DAL.pdb
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\obj\Debug\netcoreapp2.2\MyProject.DAL.csproj.CoreCompileInputs.cache
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\obj\Debug\netcoreapp2.2\MyProject.DAL.AssemblyInfoInputs.cache
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\obj\Debug\netcoreapp2.2\MyProject.DAL.AssemblyInfo.cs
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\obj\Debug\netcoreapp2.2\MyProject.DAL.dll
+C:\Users\Paytodox\source\repos\MyProject\MyProject.DAL\obj\Debug\netcoreapp2.2\MyProject.DAL.pdb

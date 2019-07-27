@@ -1,0 +1,12 @@
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\bin\Debug\netcoreapp2.2\MyProject.VehicleService.Common.deps.json
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\bin\Debug\netcoreapp2.2\MyProject.VehicleService.Common.dll
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\bin\Debug\netcoreapp2.2\MyProject.VehicleService.Common.pdb
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\bin\Debug\netcoreapp2.2\MyProject.DAL.dll
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\bin\Debug\netcoreapp2.2\MyProject.DAL.pdb
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\obj\Debug\netcoreapp2.2\MyProject.VehicleService.Common.csprojAssemblyReference.cache
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\obj\Debug\netcoreapp2.2\MyProject.VehicleService.Common.csproj.CoreCompileInputs.cache
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\obj\Debug\netcoreapp2.2\MyProject.VehicleService.Common.AssemblyInfoInputs.cache
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\obj\Debug\netcoreapp2.2\MyProject.VehicleService.Common.AssemblyInfo.cs
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\obj\Debug\netcoreapp2.2\MyProject.VehicleService.Common.csproj.CopyComplete
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\obj\Debug\netcoreapp2.2\MyProject.VehicleService.Common.dll
+C:\Users\Paytodox\source\repos\MyProject\MyProject.VehicleService.Common\obj\Debug\netcoreapp2.2\MyProject.VehicleService.Common.pdb
