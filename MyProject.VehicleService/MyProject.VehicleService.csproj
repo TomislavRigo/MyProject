@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyProject.DTO.Common\MyProject.DTO.Common.csproj" />
     <ProjectReference Include="..\MyProject.VehicleRepository.Common\MyProject.VehicleRepository.Common.csproj" />
-    <ProjectReference Include="..\MyProject.VehicleRepository\MyProject.VehicleRepository.csproj" />
     <ProjectReference Include="..\MyProject.VehicleService.Common\MyProject.VehicleService.Common.csproj" />
   </ItemGroup>
 

@@ -1,0 +1,47 @@
+﻿@model MyProject.MVC.Models.VehicleMakeViewModel
+
+@{
+    ViewData["Title"] = "VehicleMake";
+}
+
+<h1>VehicleMake</h1>
+
+<p>
+    <a asp-action="AddVehicleMake">Create New</a>
+</p>
+<div>
+    @ViewBag.Message
+</div>
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Abrv)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.VehicleMakes)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Abrv)
+                    </td>
+                    <td>@Html.ActionLink("Edit", "EditVehicleMake", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv }) | </td>
+                    <td><a href="@Url.RouteUrl("delete-vehicle-make", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })">Delete</a></td>
+                    <td><a href="@Url.RouteUrl("add-vehicle-model", new { Id = item.Id})">Add Model</a></td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}

@@ -1,13 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MyProject.DAL;
+using MyProject.DTO.Common;
 
 namespace MyProject.VehicleRepository.Common
 {
     public interface IVehicleMakeRepository
     {
-        Task<VehicleMake> GetVehicleMakesAsync(int id);
-        Task<int> AddVehicleMakeAsync(VehicleMake vehicleMake);
-        Task<int> DeleteVehicleMakeAsync(VehicleMake vehicleMake);
-        Task<int> UpdateVehicleMakeAsync(VehicleMake vehicleMake);
+        Task<IVehicleMakeModel> GetVehicleMakesAsync(Guid id);
+        Task<IVehicleMakeModel> GetAllMakesAsync(); 
+        Task<int> AddVehicleMakeAsync(IVehicleMakeModel vehicleMake);
+        Task<int> DeleteVehicleMakeAsync(IVehicleMakeModel vehicleMake);
+        Task<int> UpdateVehicleMakeAsync(IVehicleMakeModel vehicleMake);
     }
 }

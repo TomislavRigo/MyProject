@@ -1,17 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MyProject.Models;
+using MyProject.MVC.Models;
+using MyProject.VehicleService.Common;
 
 namespace MyProject.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IVehicleMakeService vehicleMakeService;
+        private readonly IMapper mapper; 
+
+        public HomeController(IVehicleMakeService vehicleMakeService, IMapper mapper)
         {
+            this.vehicleMakeService = vehicleMakeService;
+            this.mapper = mapper;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            //var response = mapper.Map<VehicleMakeViewModel>(await vehicleMakeService.GetVehicleMakeAsync(Guid.NewGuid()));
             return View();
         }
 

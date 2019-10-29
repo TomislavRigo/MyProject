@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyProject.DAL;
-using MyProject.VehicleMakeRepository;
 using MyProject.VehicleRepository;
 using MyProject.VehicleRepository.Common;
 using MyProject.VehicleService;
@@ -41,10 +36,11 @@ namespace MyProject
                 (options => options.UseSqlServer("Server=localhost;Database=TestDatabase;user id='sa';password='yourStrong(!)Password';Trusted_Connection=False;"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddTransient<IVehicleModelRepository, VehicleModelRepository>();
+            services.AddTransient<IVehicleMakeRepository, VehicleMakeRepository>();
             services.AddTransient<IGenericRepository, GenericRepository>();
             services.AddTransient<IVehicleModelService, VehicleModelService>();
             services.AddTransient<IVehicleMakeService, VehicleMakeService>();
-
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

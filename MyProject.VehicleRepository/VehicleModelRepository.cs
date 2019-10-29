@@ -1,6 +1,11 @@
-﻿using MyProject.DAL;
-using MyProject.VehicleMakeRepository;
+﻿using AutoMapper;
+using MyProject.DAL;
+using MyProject.DTO;
+using MyProject.DTO.Common;
 using MyProject.VehicleRepository.Common;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyProject.VehicleRepository
@@ -8,30 +13,44 @@ namespace MyProject.VehicleRepository
     public class VehicleModelRepository : IVehicleModelRepository
     {
         private readonly IGenericRepository genericRepository;
+        private readonly IMapper mapper;
 
-        public VehicleModelRepository(IGenericRepository genericRepository)
+        public VehicleModelRepository(IGenericRepository genericRepository, IMapper mapper)
         {
             this.genericRepository = genericRepository;
+            this.mapper = mapper;
         }
 
-        public async Task<VehicleModel> GetVehicleModelAsync(int id)
+        public async Task<IVehicleModelModel> GetAllModelsAsync()
         {
-            return await genericRepository.GetAsync<VehicleModel>(id);
+            var result = await genericRepository.GetAllModelsAsync<VehicleModel>();
+            var vehicleMakeList = new VehicleModelModel()
+            {
+                VehicleModels = result
+            };
+            return vehicleMakeList;
+        }
+        public async Task<IVehicleModelModel> GetVehicleModelAsync(Guid id)
+        {
+            return mapper.Map<IVehicleModelModel>(await genericRepository.GetAsync<VehicleModel>(id));
         }
 
-        public async Task<int> AddVehicleModelAsync(VehicleModel vehicleModel)
+        public async Task<int> AddVehicleModelAsync(IVehicleModelModel vehicleModel)
         {
-            return await genericRepository.AddAsync<VehicleModel>(vehicleModel);
+            var model = mapper.Map<VehicleModel>(vehicleModel);
+            return await genericRepository.AddAsync(model);
         }
 
-        public async Task<int> UpdateVehicleModelAsync(VehicleModel vehicleModel)
+        public async Task<int> UpdateVehicleModelAsync(IVehicleModelModel vehicleModel)
         {
-            return await genericRepository.UpdateAsync<VehicleModel>(vehicleModel);
+            var model = mapper.Map<VehicleModel>(vehicleModel);
+            return await genericRepository.UpdateAsync(model);
         }
 
-        public async Task<int> DeleteVehicleModelAsync(VehicleModel vehicleModel)
+        public async Task<int> DeleteVehicleModelAsync(IVehicleModelModel vehicleModel)
         {
-            return await genericRepository.DeleteAsync<VehicleModel>(vehicleModel);
+            var model = mapper.Map<VehicleModel>(vehicleModel);
+            return await genericRepository.DeleteAsync(model);
         }
     }
 }

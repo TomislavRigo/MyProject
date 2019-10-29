@@ -1,11 +1,12 @@
-﻿using MyProject.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using MyProject.DAL;
 using MyProject.VehicleRepository.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyProject.VehicleMakeRepository
+namespace MyProject.VehicleRepository
 {
     public class GenericRepository : IGenericRepository
     {
@@ -15,7 +16,15 @@ namespace MyProject.VehicleMakeRepository
         {
             this.dbContext = dbContext;
         }
-        public async Task<T> GetAsync<T>(int id) where T : class
+
+        public async Task<IEnumerable<T>> GetAllModelsAsync<T>() where T : class
+        {
+
+            var result = await dbContext.Set<T>().ToListAsync();
+            return result;
+        }
+
+        public async Task<T> GetAsync<T>(Guid id) where T : class
         {
             return await dbContext.Set<T>().FindAsync(id);
         }
@@ -27,7 +36,7 @@ namespace MyProject.VehicleMakeRepository
         }
 
         public async Task<int> UpdateAsync<T>(T entity) where T : class
-        { 
+        {
             dbContext.Set<T>().Update(entity);
             return await dbContext.SaveChangesAsync();
         }

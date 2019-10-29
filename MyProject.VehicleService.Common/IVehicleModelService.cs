@@ -1,13 +1,17 @@
 ﻿using MyProject.DAL;
+using MyProject.DTO;
+using MyProject.DTO.Common;
+using System;
 using System.Threading.Tasks;
 
 namespace MyProject.VehicleService.Common
 {
     public interface IVehicleModelService
     {
-        Task<VehicleModel> GetVehicleModelAsync(int id);
-        Task<int> AddVehicleModelAsync(VehicleModel vehicleModel);
-        Task<int> UpdateVehicleModelAsync(VehicleModel vehicleModel);
-        Task<int> DeleteVehicleModelAsync(VehicleModel vehicleModel);
+        Task<IVehicleModelModel> GetAllModelsAsync();
+        Task<IVehicleModelModel> GetVehicleModelAsync(Guid id);
+        Task<int> AddVehicleModelAsync(IVehicleModelModel vehicleModel);
+        Task<int> UpdateVehicleModelAsync(IVehicleModelModel vehicleModel);
+        Task<int> DeleteVehicleModelAsync(IVehicleModelModel vehicleModel);
     }
 }
