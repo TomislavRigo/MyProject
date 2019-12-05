@@ -8,11 +8,16 @@
 <h1>VehicleModel</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @using (Html.BeginForm("VehicleModel", "VehicleModelControler", FormMethod.Get))
+    {
+        <b>Search by:</b> @Html.RadioButton("searchBy", "Name", true) <text> Name </text>
+        @Html.RadioButton("searchBy", "Abrv") <text> Abrv </text><br />
+        @Html.TextBox("search")<input type="submit" value="Search" />
+    }
 </p>
 <table class="table">
     <thead>
-        <tr>
+        <tr >
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -32,7 +37,9 @@
                 @Html.DisplayFor(modelItem => item.Abrv)
             </td>
             <td>
-                @Html.ActionLink("Edit", "EditVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv, VehicleMakeId = item.VehicleMakeId }) |
+                @Html.ActionLink("Edit", "EditVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv, VehicleMakeId = item.VehicleMakeId })
+            </td>
+            <td>
                 @Html.ActionLink("Delete", "DeleteVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })
             </td>
         </tr>

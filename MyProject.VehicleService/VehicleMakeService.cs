@@ -21,9 +21,9 @@ namespace MyProject.VehicleService
             return await vehicleMakeRepository.GetVehicleMakesAsync(id);
         }
 
-        public async Task<IVehicleMakeModel> GetAllMakesAsync() 
+        public async Task<IVehicleMakeModel> GetAllMakesAsync(string searchBy, string search) 
         {
-            var result = await vehicleMakeRepository.GetAllMakesAsync();
+            var result = await vehicleMakeRepository.GetAllMakesAsync(searchBy, search);
             return result;
         }
 

@@ -4,6 +4,7 @@ using MyProject.DTO;
 using MyProject.DTO.Common;
 using MyProject.VehicleRepository.Common;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyProject.VehicleRepository
@@ -19,9 +20,16 @@ namespace MyProject.VehicleRepository
             this.mapper = mapper;
         }
 
-        public async Task<IVehicleMakeModel> GetAllMakesAsync()
+        public async Task<IVehicleMakeModel> GetAllMakesAsync(string searchBy, string search)
         {
             var result = await genericRepository.GetAllModelsAsync<VehicleMake>();
+            if (!string.IsNullOrEmpty(search))
+            {
+                result = result.Where(v => searchBy == "Name" ?
+                v.Name.StartsWith(search, StringComparison.InvariantCultureIgnoreCase):
+                v.Abrv.StartsWith(search, StringComparison.InvariantCultureIgnoreCase));
+            }
+            result = result.OrderBy(v => v.Name);
             //var vehicleMakeList = new VehicleMakeModel();
             //vehicleMakeList.VehicleMakes = result;
             var vehicleMakeList = new VehicleMakeModel()

@@ -16,9 +16,9 @@ namespace MyProject.VehicleService
             this.vehicleModelRepository = vehicleModelRepository;
         }
 
-        public async Task<IVehicleModelModel> GetAllModelsAsync()
+        public async Task<IVehicleModelModel> GetAllModelsAsync(string searchBy, string search)
         {
-            return await vehicleModelRepository.GetAllModelsAsync();
+            return await vehicleModelRepository.GetAllModelsAsync(searchBy, search);
         }
         public async Task<IVehicleModelModel> GetVehicleModelAsync(Guid id)
         {

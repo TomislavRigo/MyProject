@@ -22,9 +22,11 @@ namespace MyProject.MVC.Controllers
         }
 
         // GET: VehicleMake
-        public async Task<IActionResult> VehicleMake()
+        [HttpGet("VehicleMake/VehicleMake", Name = "vehicle-make")]
+        public async Task<IActionResult> VehicleMake(string searchBy, string search, string sortBy, string sortType)
         {
-            var make = await vehicleMakeService.GetAllMakesAsync();
+            ViewBag.Sorting = string.IsNullOrEmpty(sortType) ? "asc" : sortType;
+            var make = await vehicleMakeService.GetAllMakesAsync(searchBy, search);
             if(make.VehicleMakes.Any())
             {
                 return View(mapper.Map<VehicleMakeViewModel>(make));

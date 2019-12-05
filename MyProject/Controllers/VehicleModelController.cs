@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MyProject.DAL;
 using MyProject.DTO.Common;
 using MyProject.MVC.Models;
 using MyProject.VehicleService.Common;
@@ -24,17 +23,19 @@ namespace MyProject.MVC.Controllers
         }
 
         // GET: VehicleModel
-        public async Task<IActionResult> VehicleModel()
+        public async Task<IActionResult> VehicleModel(string searchBy, string search)
         {
-            var model = await vehicleModelService.GetAllModelsAsync();
+            var model = await vehicleModelService.GetAllModelsAsync(searchBy, search);
+            if (model.VehicleModels.Any())
+            {
+                return View(mapper.Map<VehicleModelViewModel>(model));
+            }
+            else
+            {
+                ViewBag.Message = "There is no Vehicle Models to show. \n Please add some.";
+                return View();
+            }
 
-            return View(mapper.Map<VehicleModelViewModel>(model));
-        }
-
-        // GET: VehicleModel/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
         }
 
         [HttpGet("VehicleModel/AddVehicleModel", Name = "add-vehicle-model")]
