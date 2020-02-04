@@ -14,13 +14,12 @@
     {
         <b>Search by:</b> @Html.RadioButton("searchBy", "Name", true) <text> Name </text>
         @Html.RadioButton("searchBy", "Abrv") <text> Abrv </text><br />
-        @Html.TextBox("search")<input type="submit" value="Search"/>
+        @Html.TextBox("search")<input type="submit" value="search"/>
             }
         </p>
 </p>
 <div>
     @ViewBag.Message
-    @ViewBag.Sorting
 </div>
 @if (Model != null)
 {
@@ -28,10 +27,10 @@
         <thead>
             <tr>
                 <th>
-                    <button style="color:blue;" onclick="sorting('Name','@ViewBag.Sorting')">@Html.DisplayNameFor(model => model.Name)</button>
+                    <button style="color:blue;" onclick="sorting('Name', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Name)</button>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Abrv)
+                    <button style="color:blue;" onclick="sorting('Abrv', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Abrv)</button>
                 </th>
                 <th></th>
             </tr>
@@ -46,7 +45,7 @@
                     <td width="20%">
                         @Html.DisplayFor(modelItem => item.Abrv)
                     </td>
-                    <td width="15%"><a href="@Url.RouteUrl("add-vehicle-model", new { Id = item.Id})">Add Model</a></td>
+                    <td width="15%"><a href="@Url.RouteUrl("add-vehicle-model", new { Id = item.Id })">Add Model</a></td>
                     <td width="15%">@Html.ActionLink("Edit", "EditVehicleMake", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })</td>
                     <td width="15%"><a href="@Url.RouteUrl("delete-vehicle-make", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })">Delete</a></td>
                 </tr>
@@ -55,23 +54,23 @@
         </tbody>
     </table>
     <script>
-        var sorting = function (sortBy, sortType) {
+        var sorting = function (sortBy, sortType, search, searchBy) {
             if (sortType == "desc")
             {
                 if (sortBy == "Name") {
-                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?sortBy=Name&sortType=asc");
+                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Name&sortType=asc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
                 }
                 else {
-                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?sortBy=Abrv&sortType=asc");
+                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Abrv&sortType=asc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
                 }
             }
             else
             {
                 if (sortBy == "Name") {
-                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?sortBy=Name&sortType=desc");
+                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Name&sortType=desc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
                 }
                 else {
-                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?sortBy=Abrv&sortType=desc");
+                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Abrv&sortType=desc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
                 }
             };
         };

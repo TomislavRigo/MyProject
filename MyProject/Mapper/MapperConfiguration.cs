@@ -19,6 +19,7 @@ namespace MyProject.MVC.Mapper
             #region Data Transfer Objects
             CreateMap<VehicleMakeModel, IVehicleMakeModel>().ReverseMap();
             CreateMap<VehicleModelModel, IVehicleModelModel>().ReverseMap();
+            CreateMap<Filter, IFilter>().ReverseMap();
             #endregion
             #region Data View Objects
             CreateMap<IVehicleMakeModel, VehicleMakeViewModel>().ReverseMap();

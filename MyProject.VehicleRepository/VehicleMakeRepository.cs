@@ -20,16 +20,24 @@ namespace MyProject.VehicleRepository
             this.mapper = mapper;
         }
 
-        public async Task<IVehicleMakeModel> GetAllMakesAsync(string searchBy, string search)
+        public async Task<IVehicleMakeModel> GetAllMakesAsync(Filter filter)
         {
             var result = await genericRepository.GetAllModelsAsync<VehicleMake>();
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(filter.Search))
             {
-                result = result.Where(v => searchBy == "Name" ?
-                v.Name.StartsWith(search, StringComparison.InvariantCultureIgnoreCase):
-                v.Abrv.StartsWith(search, StringComparison.InvariantCultureIgnoreCase));
+                result = result.Where(v => filter.SearchBy == "Name" ?
+                v.Name.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase):
+                v.Abrv.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase));
+
             }
-            result = result.OrderBy(v => v.Name);
+            if (filter.SortType == "asc")
+            {
+                result = result.OrderBy(v => v.Name);
+            }
+            else
+            {
+                result = result.OrderByDescending(v => v.Name);
+            }
             //var vehicleMakeList = new VehicleMakeModel();
             //vehicleMakeList.VehicleMakes = result;
             var vehicleMakeList = new VehicleMakeModel()

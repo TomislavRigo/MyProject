@@ -7,6 +7,7 @@ using MyProject.VehicleService.Common;
 using System.Threading.Tasks;
 using MyProject.DTO.Common;
 using System.Linq;
+using X.PagedList;
 
 namespace MyProject.MVC.Controllers
 {
@@ -23,10 +24,13 @@ namespace MyProject.MVC.Controllers
 
         // GET: VehicleMake
         [HttpGet("VehicleMake/VehicleMake", Name = "vehicle-make")]
-        public async Task<IActionResult> VehicleMake(string searchBy, string search, string sortBy, string sortType)
+        public async Task<IActionResult> VehicleMake(string searchBy, string search, string sortBy, string sortType, int page, int pageSize)
         {
-            ViewBag.Sorting = string.IsNullOrEmpty(sortType) ? "asc" : sortType;
-            var make = await vehicleMakeService.GetAllMakesAsync(searchBy, search);
+            sortType = string.IsNullOrEmpty(sortType) ? "asc" : sortType;
+            ViewBag.Sorting = sortType;
+            ViewBag.Search = !string.IsNullOrEmpty(search) ? search : "";
+            ViewBag.SearchBy = !string.IsNullOrEmpty(searchBy) ? searchBy : "Name";
+            var make = await vehicleMakeService.GetAllMakesAsync(searchBy, search, sortBy, sortType);
             if(make.VehicleMakes.Any())
             {
                 return View(mapper.Map<VehicleMakeViewModel>(make));

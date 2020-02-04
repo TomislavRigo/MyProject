@@ -11,5 +11,6 @@ namespace MyProject.DTO.Common
         string Abrv { get; set; }
         IEnumerable<VehicleMake> VehicleMakes { get; set; }
         List<VehicleModel> VehicleModels { get; set; }
+        int TotalItemsCount { get; set; }
     }
 }
