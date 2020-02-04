@@ -23,9 +23,13 @@ namespace MyProject.MVC.Controllers
         }
 
         // GET: VehicleModel
-        public async Task<IActionResult> VehicleModel(string searchBy, string search)
+        public async Task<IActionResult> VehicleModel(string searchBy, string search, string sortBy, string sortType, int page, int pageSize)
         {
-            var model = await vehicleModelService.GetAllModelsAsync(searchBy, search);
+            sortType = string.IsNullOrEmpty(sortType) ? "asc" : sortType;
+            ViewBag.Sorting = sortType;
+            ViewBag.Search = !string.IsNullOrEmpty(search) ? search : "";
+            ViewBag.SearchBy = !string.IsNullOrEmpty(searchBy) ? searchBy : "Name";
+            var model = await vehicleModelService.GetAllModelsAsync(searchBy, search, sortBy, sortType);
             if (model.VehicleModels.Any())
             {
                 return View(mapper.Map<VehicleModelViewModel>(model));

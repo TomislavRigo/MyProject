@@ -19,10 +19,10 @@
     <thead>
         <tr >
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <button style="color:blue;" onclick="sorting('Name', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Name)</button>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Abrv)
+                <button style="color:blue;" onclick="sorting('Abrv', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Abrv)</button>
             </th>
             <th></th>
         </tr>
@@ -46,3 +46,23 @@
 }
     </tbody>
 </table>
+<script>
+    var sorting = function (sortBy, sortType, search, searchBy) {
+        if (sortType == "desc") {
+            if (sortBy == "Name") {
+                window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Name&sortType=asc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+            }
+            else {
+                window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Abrv&sortType=asc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+            }
+        }
+        else {
+            if (sortBy == "Name") {
+                window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Name&sortType=desc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+            }
+            else {
+                window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Abrv&sortType=desc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+            }
+        };
+    };
+</script>

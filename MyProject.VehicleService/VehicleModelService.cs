@@ -1,4 +1,5 @@
 ﻿using MyProject.DAL;
+using MyProject.DTO;
 using MyProject.DTO.Common;
 using MyProject.VehicleRepository.Common;
 using MyProject.VehicleService.Common;
@@ -16,9 +17,17 @@ namespace MyProject.VehicleService
             this.vehicleModelRepository = vehicleModelRepository;
         }
 
-        public async Task<IVehicleModelModel> GetAllModelsAsync(string searchBy, string search)
+        public async Task<IVehicleModelModel> GetAllModelsAsync(string searchBy, string search, string sortBy, string sortType)
         {
-            return await vehicleModelRepository.GetAllModelsAsync(searchBy, search);
+            var filter = new Filter()
+            {
+                SearchBy = searchBy,
+                Search = search,
+                SortBy = sortBy,
+                SortType = sortType
+
+            };
+            return await vehicleModelRepository.GetAllModelsAsync(filter);
         }
         public async Task<IVehicleModelModel> GetVehicleModelAsync(Guid id)
         {
