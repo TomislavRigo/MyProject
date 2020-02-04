@@ -22,16 +22,39 @@ namespace MyProject.VehicleRepository
             this.mapper = mapper;
         }
 
-        public async Task<IVehicleModelModel> GetAllModelsAsync(string searchBy, string search)
+        public async Task<IVehicleModelModel> GetAllModelsAsync(Filter filter)
         {
             var result = await genericRepository.GetAllModelsAsync<VehicleModel>();
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(filter.Search))
             {
-                result = result.Where(v => searchBy == "Name" ?
-                v.Name.StartsWith(search, StringComparison.InvariantCultureIgnoreCase) :
-                v.Abrv.StartsWith(search, StringComparison.InvariantCultureIgnoreCase));
+                result = result.Where(v => filter.SearchBy == "Name" ?
+                v.Name.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase) :
+                v.Abrv.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase));
             }
-            result = result.OrderBy(v => v.Name);
+
+            if (filter.SortType == "asc")
+            {
+                if (filter.SortBy == "Name")
+                {
+                    result = result.OrderBy(v => v.Name);
+                }
+                else 
+                {
+                    result = result.OrderBy(v => v.Abrv);
+                }
+            }
+            else
+            {
+                if (filter.SortBy == "Name")
+                {
+                    result = result.OrderByDescending(v => v.Name);
+                }
+                else
+                {
+                    result = result.OrderByDescending(v => v.Abrv);
+                }
+            }
+
             var vehicleMakeList = new VehicleModelModel()
             {
                 VehicleModels = result

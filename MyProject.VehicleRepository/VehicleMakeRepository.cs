@@ -32,16 +32,31 @@ namespace MyProject.VehicleRepository
             }
             if (filter.SortType == "asc")
             {
-                result = result.OrderBy(v => v.Name);
+                if (filter.SortBy == "Name")
+                {
+                    result = result.OrderBy(v => v.Name);
+                }
+                else
+                {
+                    result = result.OrderBy(v => v.Abrv);
+                }
             }
             else
             {
-                result = result.OrderByDescending(v => v.Name);
+                if (filter.SortBy == "Name")
+                {
+                    result = result.OrderByDescending(v => v.Name);
+                }
+                else
+                {
+                    result = result.OrderByDescending(v => v.Abrv);
+                }
             }
             //var vehicleMakeList = new VehicleMakeModel();
             //vehicleMakeList.VehicleMakes = result;
             var vehicleMakeList = new VehicleMakeModel()
             {
+                //VehicleMakes = result.Skip((pageNumber - 1) * pageSize).Take(pageSize)
                 VehicleMakes = result
             };
             return vehicleMakeList;
