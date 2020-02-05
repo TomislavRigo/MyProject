@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>VehicleModel</h1>
+<h1>Vehicle Models</h1>
 
 <p>
     @using (Html.BeginForm("VehicleModel", "VehicleModelControler", FormMethod.Get))
@@ -15,37 +15,44 @@
         @Html.TextBox("search")<input type="submit" value="Search" />
     }
 </p>
-<table class="table">
-    <thead>
-        <tr >
-            <th>
-                <button style="color:blue;" onclick="sorting('Name', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Name)</button>
-            </th>
-            <th>
-                <button style="color:blue;" onclick="sorting('Abrv', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Abrv)</button>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.VehicleModels) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Abrv)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "EditVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv, VehicleMakeId = item.VehicleMakeId })
-            </td>
-            <td>
-                @Html.ActionLink("Delete", "DeleteVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div>
+    @ViewBag.Message
+</div>
+@if (Model != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr >
+                <th>
+                    <button style="color:blue;" onclick="sorting('Name', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Name)</button>
+                </th>
+                <th>
+                    <button style="color:blue;" onclick="sorting('Abrv', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Abrv)</button>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.VehicleModels)
+    {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Abrv)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv, VehicleMakeId = item.VehicleMakeId })
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "DeleteVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
 <script>
     var sorting = function (sortBy, sortType, search, searchBy) {
         if (sortType == "desc") {
@@ -66,3 +73,4 @@
         };
     };
 </script>
+}

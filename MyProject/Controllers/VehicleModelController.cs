@@ -36,7 +36,7 @@ namespace MyProject.MVC.Controllers
             }
             else
             {
-                ViewBag.Message = "There is no Vehicle Models to show. \n Please add some.";
+                ViewBag.Message = "There is no Vehicle Models to show.";
                 return View();
             }
 
