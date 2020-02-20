@@ -8,7 +8,7 @@ namespace MyProject.VehicleService.Common
 {
     public interface IVehicleModelService
     {
-        Task<IVehicleModelModel> GetAllModelsAsync(string searchBy, string search, string sortBy, string sortType);
+        Task<IVehicleModelModel> GetAllModelsAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize);
         Task<IVehicleModelModel> GetVehicleModelAsync(Guid id);
         Task<int> AddVehicleModelAsync(IVehicleModelModel vehicleModel);
         Task<int> UpdateVehicleModelAsync(IVehicleModelModel vehicleModel);

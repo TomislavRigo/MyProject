@@ -22,8 +22,14 @@ namespace MyProject.VehicleService
             return await vehicleMakeRepository.GetVehicleMakesAsync(id);
         }
 
-        public async Task<IVehicleMakeModel> GetAllMakesAsync(string searchBy, string search, string sortBy, string sortType) 
+        public async Task<IVehicleMakeModel> GetAllMakesAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize) 
         {
+            var paging = new Paging()
+            {
+                PageNumber = page,
+                PageSize = pageSize
+            };
+
             var filter = new Filter()
             {
                 SearchBy = searchBy,
@@ -32,7 +38,7 @@ namespace MyProject.VehicleService
                 SortType = sortType
 
             };
-            var result = await vehicleMakeRepository.GetAllMakesAsync(filter);
+            var result = await vehicleMakeRepository.GetAllMakesAsync(filter, paging);
             return result;
         }
 

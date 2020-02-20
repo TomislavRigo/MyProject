@@ -4,19 +4,17 @@
     ViewData["Title"] = "VehicleMake";
 }
 
-<h1>VehicleMake</h1>
-
-<p>
-    <a asp-action="AddVehicleMake">Add Make</a>
-</p>
+<h1>Vehicle Makes</h1>
 <p>
     @using (Html.BeginForm("VehicleMake", "VehicleMakeControler", FormMethod.Get))
     {
-        <b>Search by:</b> @Html.RadioButton("searchBy", "Name", true) <text> Name </text>
+    <div>
+        <b>Search by:&nbsp;&nbsp;</b> @Html.RadioButton("searchBy", "Name", true)<text> Name&nbsp;&nbsp;</text>
         @Html.RadioButton("searchBy", "Abrv") <text> Abrv </text><br />
-        @Html.TextBox("search")<input type="submit" value="search"/>
-            }
-        </p>
+        @Html.TextBox("search")<input type="submit" value="Search" />
+        <button style="float:right"><a asp-action="AddVehicleMake" style="color:darkcyan">Add Make</a></button>
+    </div>
+    }
 </p>
 <div>
     @ViewBag.Message
@@ -27,52 +25,91 @@
         <thead>
             <tr>
                 <th>
-                    <button style="color:blue;" onclick="sorting('Name', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Name)</button>
+                    <button style="color:darkcyan;" onclick="sorting('Name', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy', @ViewBag.CurrentPage, @ViewBag.PageSize)">@Html.DisplayNameFor(model => model.Name)</button>
                 </th>
                 <th>
-                    <button style="color:blue;" onclick="sorting('Abrv', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Abrv)</button>
+                    <button style="color:darkcyan;" onclick="sorting('Abrv', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy', @ViewBag.CurrentPage, @ViewBag.PageSize)">@Html.DisplayNameFor(model => model.Abrv)</button>
                 </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.VehicleMakes)
             {
-                <tr>
-                    <td width="35%">
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td width="20%">
-                        @Html.DisplayFor(modelItem => item.Abrv)
-                    </td>
-                    <td width="15%"><a href="@Url.RouteUrl("add-vehicle-model", new { Id = item.Id })">Add Model</a></td>
-                    <td width="15%">@Html.ActionLink("Edit", "EditVehicleMake", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })</td>
-                    <td width="15%"><a href="@Url.RouteUrl("delete-vehicle-make", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })">Delete</a></td>
-                </tr>
+            <tr>
+                <td width="35%">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.Abrv)
+                </td>
+                <td width="15%"><a href="@Url.RouteUrl("add-vehicle-model", new { Id = item.Id })" style="color:darkcyan">Add Model</a></td>
+                <td width="15%"><a href="@Url.RouteUrl("edit-vehicle-make", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })" style="color:darkcyan">Edit</a></td>
+                <td width="15%"><a href="@Url.RouteUrl("delete-vehicle-make", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })" style="color:darkcyan">Delete</a></td>
+            </tr>
 
             }
         </tbody>
     </table>
+    <div>
+        @if (ViewBag.TotalPageCount > 1)
+        {
+            <ul class="pagination">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(1, '@ViewBag.PageSize')">First</button>
+                    </th>
+                }
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(@ViewBag.CurrentPage - 1, '@ViewBag.PageSize' )">@(@ViewBag.CurrentPage - 1)</button>
+                    </th>
+                }
+                <th>
+                    <button style="color:gray;">@ViewBag.CurrentPage</button>
+                </th>
+                @if (ViewBag.CurrentPage < ViewBag.TotalPageCount)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(@ViewBag.CurrentPage + 1, @ViewBag.PageSize )">@(@ViewBag.CurrentPage + 1)</button>
+                    </th>
+                }
+                @if (ViewBag.CurrentPage < ViewBag.TotalPageCount)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(@ViewBag.TotalPageCount, '@ViewBag.PageSize')">Last</button>
+                    </th>
+                }
+            </ul>
+        }
+    </div>
+
     <script>
-        var sorting = function (sortBy, sortType, search, searchBy) {
+        var sorting = function (sortBy, sortType, search, searchBy, page, pageSize) {
             if (sortType == "desc")
             {
                 if (sortBy == "Name") {
-                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Name&sortType=asc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Name&sortType=asc" + ("&page=" + page) + ("&pageSize=" + pageSize) + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
                 }
                 else {
-                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Abrv&sortType=asc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Abrv&sortType=asc" + ("&page=" + page) + ("&pageSize=" + pageSize) + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
                 }
             }
             else
             {
                 if (sortBy == "Name") {
-                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Name&sortType=desc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Name&sortType=desc" + ("&page=" + page) + ("&pageSize=" + pageSize) + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
                 }
                 else {
-                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Abrv&sortType=desc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                    window.location.replace("https://localhost:44373/VehicleMake/VehicleMake?" + "sortBy=Abrv&sortType=desc" + ("&page=" + page) + ("&pageSize=" + pageSize) + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
                 }
             };
         };
+
+        var paging = function (page, pageSize)
+        {
+            '@ViewBag.Sorting' === 'asc' ? sorting('@ViewBag.SortBy', 'desc', '@ViewBag.Search', '@ViewBag.SearchBy', page, pageSize) : sorting('@ViewBag.SortBy', 'asc', '@ViewBag.Search', '@ViewBag.SearchBy', page, pageSize);
+        }
     </script>
 }

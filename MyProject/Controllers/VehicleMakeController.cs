@@ -24,20 +24,30 @@ namespace MyProject.MVC.Controllers
 
         // GET: VehicleMake
         [HttpGet("VehicleMake/VehicleMake", Name = "vehicle-make")]
-        public async Task<IActionResult> VehicleMake(string searchBy, string search, string sortBy, string sortType, int page, int pageSize)
+        public async Task<IActionResult> VehicleMake(string searchBy, string search, string sortBy, string sortType, int? page, int? pageSize)
         {
+            page = page == null ? 1 : page;
+            pageSize = pageSize == null ? 5 : pageSize;
             sortType = string.IsNullOrEmpty(sortType) ? "asc" : sortType;
+
             ViewBag.Sorting = sortType;
+            ViewBag.SortBy = !string.IsNullOrEmpty(sortBy) ? sortBy : "";
             ViewBag.Search = !string.IsNullOrEmpty(search) ? search : "";
             ViewBag.SearchBy = !string.IsNullOrEmpty(searchBy) ? searchBy : "Name";
-            var make = await vehicleMakeService.GetAllMakesAsync(searchBy, search, sortBy, sortType);
-            if(make.VehicleMakes.Any())
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+
+            var make = await vehicleMakeService.GetAllMakesAsync(searchBy, search, sortBy, sortType, (int)page, (int)pageSize);
+            var pageCount = make.TotalItemsCount / pageSize;
+            ViewBag.TotalPageCount = make.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+
+            if (make.VehicleMakes.Any())
             {
                 return View(mapper.Map<VehicleMakeViewModel>(make));
             }
             else
             {
-                ViewBag.Message = "There is no Vehicle Make to show. \n Please add some.";
+                ViewBag.Message = "There are no Vehicle Makes to show.";
                 return View();
             }
         }

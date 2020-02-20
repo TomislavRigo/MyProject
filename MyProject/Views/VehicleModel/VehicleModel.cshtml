@@ -10,8 +10,8 @@
 <p>
     @using (Html.BeginForm("VehicleModel", "VehicleModelControler", FormMethod.Get))
     {
-        <b>Search by:</b> @Html.RadioButton("searchBy", "Name", true) <text> Name </text>
-        @Html.RadioButton("searchBy", "Abrv") <text> Abrv </text><br />
+        <b> Search by:&nbsp;&nbsp;</b> @Html.RadioButton("searchBy", "Name", true)<text> Name&nbsp;&nbsp;</text>
+        @Html.RadioButton("searchBy", "Abrv")<text> Abrv </text><br />
         @Html.TextBox("search")<input type="submit" value="Search" />
     }
 </p>
@@ -23,54 +23,98 @@
 
     <table class="table">
         <thead>
-            <tr >
+            <tr>
                 <th>
-                    <button style="color:blue;" onclick="sorting('Name', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Name)</button>
+                    <button style="color:darkcyan;" onclick="sorting('Name', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy', @ViewBag.CurrentPage, @ViewBag.PageSize)">@Html.DisplayNameFor(model => model.Name)</button>
                 </th>
                 <th>
-                    <button style="color:blue;" onclick="sorting('Abrv', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy')">@Html.DisplayNameFor(model => model.Abrv)</button>
+                    <button style="color:darkcyan;" onclick="sorting('Abrv', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy', @ViewBag.CurrentPage, @ViewBag.PageSize)">@Html.DisplayNameFor(model => model.Abrv)</button>
                 </th>
-                <th></th>
+                <th>
+                    <button style="color:darkcyan"> Make </button>
+                </th>
             </tr>
         </thead>
         <tbody>
-    @foreach (var item in Model.VehicleModels)
-    {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Abrv)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "EditVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv, VehicleMakeId = item.VehicleMakeId })
-                </td>
-                <td>
-                    @Html.ActionLink("Delete", "DeleteVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv })
-                </td>
-            </tr>
-    }
+            @foreach (var item in Model.VehicleModels)
+            {
+                <tr>
+                    <td width="35%">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td width="20%">
+                        @Html.DisplayFor(modelItem => item.Abrv)
+                    </td>
+                    <td width="15%">
+                        @Html.DisplayFor(modelItem => item.VehicleMake.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv, VehicleMakeId = item.VehicleMakeId }, new {@style="color:#009999;"})
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "DeleteVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv }, new {@style="color:#009999;"})
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-<script>
-    var sorting = function (sortBy, sortType, search, searchBy) {
-        if (sortType == "desc") {
-            if (sortBy == "Name") {
-                window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Name&sortType=asc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
-            }
-            else {
-                window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Abrv&sortType=asc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
-            }
+    <div>
+        @if (ViewBag.TotalPageCount > 1)
+        {
+            <ul class="pagination">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(1, '@ViewBag.PageSize')">First</button>
+                    </th>
+                }
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(@ViewBag.CurrentPage - 1, '@ViewBag.PageSize' )">@(@ViewBag.CurrentPage - 1)</button>
+                    </th>
+                }
+                <th>
+                    <button style="color:gray;">@ViewBag.CurrentPage</button>
+                </th>
+                @if (ViewBag.CurrentPage < ViewBag.TotalPageCount)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(@ViewBag.CurrentPage + 1, @ViewBag.PageSize )">@(@ViewBag.CurrentPage + 1)</button>
+                    </th>
+                }
+                @if (ViewBag.CurrentPage < ViewBag.TotalPageCount)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(@ViewBag.TotalPageCount, '@ViewBag.PageSize')">Last</button>
+                    </th>
+                }
+            </ul>
         }
-        else {
-            if (sortBy == "Name") {
-                window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Name&sortType=desc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+    </div>
+    <script>
+        var sorting = function (sortBy, sortType, search, searchBy, page, pageSize) {
+            if (sortType == "desc") {
+                if (sortBy == "Name") {
+                    window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Name&sortType=asc" + ("&page=" + page) + ("&pageSize=" + pageSize) +(searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                }
+                else {
+                    window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Abrv&sortType=asc" + ("&page=" + page) + ("&pageSize=" + pageSize) +(searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                }
             }
             else {
-                window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Abrv&sortType=desc" + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
-            }
+                if (sortBy == "Name") {
+                    window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Name&sortType=desc" + ("&page=" + page) + ("&pageSize=" + pageSize) +(searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                }
+                else {
+                    window.location.replace("https://localhost:44373/VehicleModel/VehicleModel?" + "sortBy=Abrv&sortType=desc" + ("&page=" + page) + ("&pageSize=" + pageSize) +(searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                }
+            };
         };
-    };
-</script>
+
+        var paging = function (page, pageSize)
+        {
+            '@ViewBag.Sorting' === 'asc' ? sorting('@ViewBag.SortBy', 'desc', '@ViewBag.Search', '@ViewBag.SearchBy', page, pageSize) : sorting('@ViewBag.SortBy', 'asc', '@ViewBag.Search', '@ViewBag.SearchBy', page, pageSize);
+        }
+    </script>
 }

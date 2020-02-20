@@ -10,9 +10,5 @@ namespace MyProject.DTO.Common
         string Search { get; set; }
         string SortBy { get; set; }
         string SortType { get; set; }
-        int PageNumber { get; set; }
-        int PageSize { get; set; }
-        int TotalItemsCount { get; set; }
-
     }
 }

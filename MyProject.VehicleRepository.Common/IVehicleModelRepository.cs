@@ -8,7 +8,7 @@ namespace MyProject.VehicleRepository.Common
 {
     public interface IVehicleModelRepository
     {
-        Task<IVehicleModelModel> GetAllModelsAsync(Filter filter);
+        Task<IVehicleModelModel> GetAllModelsAsync(IFilter filter, IPaging paging);
         Task<IVehicleModelModel> GetVehicleModelAsync(Guid id);
         Task<int> AddVehicleModelAsync(IVehicleModelModel vehicleModel);
         Task<int> UpdateVehicleModelAsync(IVehicleModelModel vehicleModel);

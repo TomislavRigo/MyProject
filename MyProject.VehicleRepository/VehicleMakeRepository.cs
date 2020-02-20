@@ -20,30 +20,31 @@ namespace MyProject.VehicleRepository
             this.mapper = mapper;
         }
 
-        public async Task<IVehicleMakeModel> GetAllMakesAsync(Filter filter)
+        public async Task<IVehicleMakeModel> GetAllMakesAsync(IFilter filter, IPaging paging)
         {
             var result = await genericRepository.GetAllModelsAsync<VehicleMake>();
+            var count = result.Count();
+
             if (!string.IsNullOrEmpty(filter.Search))
             {
                 result = result.Where(v => filter.SearchBy == "Name" ?
                 v.Name.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase):
                 v.Abrv.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase));
-
             }
+            
             if (filter.SortType == "asc")
             {
-                result = filter.SortBy == "Name" ? result.OrderBy(v => v.Name) : result.OrderBy(v => v.Abrv);             
+                result = filter.SortBy == "Name" || filter.SortBy == null ? result.OrderBy(v => v.Name) : result.OrderBy(v => v.Abrv);             
             }
             else
             {
-                result = filter.SortBy == "Abrv" ? result.OrderByDescending(v => v.Name) : result.OrderByDescending(v => v.Abrv);
+                result = filter.SortBy == "Name" || filter.SortBy == null ? result.OrderByDescending(v => v.Name) : result.OrderByDescending(v => v.Abrv);
             }
-            //var vehicleMakeList = new VehicleMakeModel();
-            //vehicleMakeList.VehicleMakes = result;
+
             var vehicleMakeList = new VehicleMakeModel()
             {
-                //VehicleMakes = result.Skip((pageNumber - 1) * pageSize).Take(pageSize)
-                VehicleMakes = result
+                VehicleMakes = result.Skip(paging.Skip).Take(paging.PageSize),
+                TotalItemsCount = count
             };
             return vehicleMakeList;
         }

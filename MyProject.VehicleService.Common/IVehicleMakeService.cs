@@ -9,7 +9,7 @@ namespace MyProject.VehicleService.Common
     public interface IVehicleMakeService
     {
         Task<IVehicleMakeModel> GetVehicleMakeAsync(Guid id);
-        Task<IVehicleMakeModel> GetAllMakesAsync(string searchBy, string search, string sortBy, string sortType);
+        Task<IVehicleMakeModel> GetAllMakesAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize);
         Task<int> AddVehicleMakeAsync(IVehicleMakeModel vehicleMake);
         Task<int> UpdateVehicleMakeAsync(IVehicleMakeModel vehicleMake);
         Task<int> DeleteVehicleMakeAsync(IVehicleMakeModel vehicleMake);

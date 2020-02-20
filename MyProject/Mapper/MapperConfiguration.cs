@@ -20,6 +20,7 @@ namespace MyProject.MVC.Mapper
             CreateMap<VehicleMakeModel, IVehicleMakeModel>().ReverseMap();
             CreateMap<VehicleModelModel, IVehicleModelModel>().ReverseMap();
             CreateMap<Filter, IFilter>().ReverseMap();
+            CreateMap<Paging, IPaging>().ReverseMap();
             #endregion
             #region Data View Objects
             CreateMap<IVehicleMakeModel, VehicleMakeViewModel>().ReverseMap();

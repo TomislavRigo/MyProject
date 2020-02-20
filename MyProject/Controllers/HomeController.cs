@@ -22,7 +22,6 @@ namespace MyProject.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var response = mapper.Map<VehicleMakeViewModel>(await vehicleMakeService.GetVehicleMakeAsync(Guid.NewGuid()));
             return View();
         }
 

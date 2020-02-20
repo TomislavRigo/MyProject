@@ -17,8 +17,13 @@ namespace MyProject.VehicleService
             this.vehicleModelRepository = vehicleModelRepository;
         }
 
-        public async Task<IVehicleModelModel> GetAllModelsAsync(string searchBy, string search, string sortBy, string sortType)
+        public async Task<IVehicleModelModel> GetAllModelsAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize)
         {
+            var paging = new Paging()
+            {
+                PageNumber = page,
+                PageSize = pageSize
+            };
             var filter = new Filter()
             {
                 SearchBy = searchBy,
@@ -27,7 +32,7 @@ namespace MyProject.VehicleService
                 SortType = sortType
 
             };
-            return await vehicleModelRepository.GetAllModelsAsync(filter);
+            return await vehicleModelRepository.GetAllModelsAsync(filter, paging);
         }
         public async Task<IVehicleModelModel> GetVehicleModelAsync(Guid id)
         {

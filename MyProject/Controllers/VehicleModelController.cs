@@ -23,20 +23,29 @@ namespace MyProject.MVC.Controllers
         }
 
         // GET: VehicleModel
-        public async Task<IActionResult> VehicleModel(string searchBy, string search, string sortBy, string sortType, int page, int pageSize)
+        public async Task<IActionResult> VehicleModel(string searchBy, string search, string sortBy, string sortType, int? page, int? pageSize)
         {
+            page = page == null ? 1 : page;
+            pageSize = pageSize == null ? 4 : pageSize;
+
             sortType = string.IsNullOrEmpty(sortType) ? "asc" : sortType;
             ViewBag.Sorting = sortType;
             ViewBag.Search = !string.IsNullOrEmpty(search) ? search : "";
             ViewBag.SearchBy = !string.IsNullOrEmpty(searchBy) ? searchBy : "Name";
-            var model = await vehicleModelService.GetAllModelsAsync(searchBy, search, sortBy, sortType);
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            var model = await vehicleModelService.GetAllModelsAsync(searchBy, search, sortBy, sortType, (int)page, (int)pageSize);
+
+            var pageCount = model.TotalItemsCount / pageSize;
+            ViewBag.TotalPageCount = model.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+
             if (model.VehicleModels.Any())
             {
                 return View(mapper.Map<VehicleModelViewModel>(model));
             }
             else
             {
-                ViewBag.Message = "There is no Vehicle Models to show.";
+                ViewBag.Message = "There are no Vehicle Models to show.";
                 return View();
             }
 

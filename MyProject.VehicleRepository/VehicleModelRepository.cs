@@ -22,9 +22,11 @@ namespace MyProject.VehicleRepository
             this.mapper = mapper;
         }
 
-        public async Task<IVehicleModelModel> GetAllModelsAsync(Filter filter)
+        public async Task<IVehicleModelModel> GetAllModelsAsync(IFilter filter, IPaging paging)
         {
             var result = await genericRepository.GetAllModelsAsync<VehicleModel>();
+            var count = result.Count();
+
             if (!string.IsNullOrEmpty(filter.Search))
             {
                 result = result.Where(v => filter.SearchBy == "Name" ?
@@ -34,30 +36,17 @@ namespace MyProject.VehicleRepository
 
             if (filter.SortType == "asc")
             {
-                if (filter.SortBy == "Name")
-                {
-                    result = result.OrderBy(v => v.Name);
-                }
-                else 
-                {
-                    result = result.OrderBy(v => v.Abrv);
-                }
+                result = filter.SortBy == "Name" || filter.SortBy == null ? result.OrderBy(v => v.Name) : result.OrderBy(v => v.Abrv);
             }
             else
             {
-                if (filter.SortBy == "Name")
-                {
-                    result = result.OrderByDescending(v => v.Name);
-                }
-                else
-                {
-                    result = result.OrderByDescending(v => v.Abrv);
-                }
+                result = filter.SortBy == "Name" || filter.SortBy == null ? result.OrderByDescending(v => v.Name) : result.OrderByDescending(v => v.Abrv);
             }
 
             var vehicleMakeList = new VehicleModelModel()
             {
-                VehicleModels = result
+                VehicleModels = result.Skip(paging.Skip).Take(paging.PageSize),
+                TotalItemsCount = count
             };
             return vehicleMakeList;
         }
