@@ -9,5 +9,6 @@ namespace MyProject.DAL
         public string Abrv { get; set; }
         public Guid VehicleMakeId { get; set; }
         public VehicleMake VehicleMake { get; set; }
+        public string Make { get; set; }
     }
 }

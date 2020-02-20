@@ -68,7 +68,9 @@ namespace MyProject.MVC.Controllers
                 {
                     var vehicleModel = mapper.Map<IVehicleModelModel>(vehicleModelViewModel);
                     vehicleModel.Id = Guid.NewGuid();
-                    vehicleModel.VehicleMake = await vehicleMakeService.GetVehicleMakeAsync(vehicleModel.VehicleMakeId);
+                    //vehicleModel.VehicleMake = await vehicleMakeService.GetVehicleMakeAsync(vehicleModel.VehicleMakeId);
+                    var vehicleMake = await vehicleMakeService.GetVehicleMakeAsync(vehicleModel.VehicleMakeId);
+                    vehicleModel.Make = vehicleMake.Name;
                     await vehicleModelService.AddVehicleModelAsync(vehicleModel);
                 }
                 else

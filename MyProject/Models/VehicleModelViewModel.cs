@@ -15,5 +15,6 @@ namespace MyProject.MVC.Models
         public VehicleMake VehicleMake { get; set; }
         public IEnumerable<IVehicleModelModel> VehicleModels {get; set;}
         public Guid VehicleMakeId { get; set; }
+        public string Make { get; set; }
     }
 }

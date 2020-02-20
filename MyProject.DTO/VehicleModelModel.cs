@@ -15,5 +15,6 @@ namespace MyProject.DTO
         public IVehicleMakeModel VehicleMake { get; set; }
         public IEnumerable<VehicleModel> VehicleModels { get; set; }
         public int TotalItemsCount { get; set; }
+        public string Make { get; set; }
     }
 }
