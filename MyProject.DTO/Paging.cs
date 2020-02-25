@@ -9,7 +9,6 @@ namespace MyProject.DTO
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public int TotalItemsCount { get; set; }
         public int Skip
         {
             get
@@ -18,5 +17,6 @@ namespace MyProject.DTO
             }
             set { }
         }
+        public int TotalItemsCount { get; set; }
     }
 }

@@ -4,13 +4,16 @@ using System.Collections.Generic;
 
 namespace MyProject.DTO.Common
 {
-    public interface IVehicleMakeModel
+    public interface IVehicleModelDTO
     {
         Guid Id { get; set; }
+
+        Guid VehicleMakeId { get; set; }
+
         string Name { get; set; }
+
         string Abrv { get; set; }
-        IEnumerable<VehicleMake> VehicleMakes { get; set; }
-        List<VehicleModel> VehicleModels { get; set; }
-        int TotalItemsCount { get; set; }
+
+        IVehicleMakeDTO VehicleMake { get; set; }
     }
 }

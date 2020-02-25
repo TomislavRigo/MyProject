@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -21,7 +22,6 @@ namespace MyProject.MVC.Controllers
             this.vehicleMakeService = vehicleMakeService;
             this.mapper = mapper;
         }
-
         // GET: VehicleModel
         public async Task<IActionResult> VehicleModel(string searchBy, string search, string sortBy, string sortType, int? page, int? pageSize)
         {
@@ -34,14 +34,18 @@ namespace MyProject.MVC.Controllers
             ViewBag.SearchBy = !string.IsNullOrEmpty(searchBy) ? searchBy : "Name";
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
-            var model = await vehicleModelService.GetAllModelsAsync(searchBy, search, sortBy, sortType, (int)page, (int)pageSize);
 
-            var pageCount = model.TotalItemsCount / pageSize;
-            ViewBag.TotalPageCount = model.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+            var result = await vehicleModelService.GetAllModelsAsync(searchBy, search, sortBy, sortType, (int)page, (int)pageSize);
 
-            if (model.VehicleModels.Any())
+            var vehicleModels = (IEnumerable<IVehicleModelDTO>)result["models"];
+            var paging = (IPaging)result["paging"];
+
+            var pageCount = paging.TotalItemsCount / pageSize;
+            ViewBag.TotalPageCount = paging.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+
+            if (vehicleModels.Any())
             {
-                return View(mapper.Map<VehicleModelViewModel>(model));
+                return View(mapper.Map<IEnumerable<VehicleModelViewModel>>(vehicleModels));
             }
             else
             {
@@ -66,11 +70,9 @@ namespace MyProject.MVC.Controllers
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    var vehicleModel = mapper.Map<IVehicleModelModel>(vehicleModelViewModel);
+                    var vehicleModel = mapper.Map<IVehicleModelDTO>(vehicleModelViewModel);
                     vehicleModel.Id = Guid.NewGuid();
-                    //vehicleModel.VehicleMake = await vehicleMakeService.GetVehicleMakeAsync(vehicleModel.VehicleMakeId);
-                    var vehicleMake = await vehicleMakeService.GetVehicleMakeAsync(vehicleModel.VehicleMakeId);
-                    vehicleModel.Make = vehicleMake.Name;
+                    vehicleModel.VehicleMake = await vehicleMakeService.GetVehicleMakeAsync(vehicleModel.VehicleMakeId);
                     await vehicleModelService.AddVehicleModelAsync(vehicleModel);
                 }
                 else
@@ -85,23 +87,22 @@ namespace MyProject.MVC.Controllers
             }
         }
 
-        // GET: VehicleModel/Edit/5
+        // GET: VehicleModel/Edit
         [HttpGet("VehicleModel/EditVehicleModel", Name = "edit-vehicle-model")]
         public ActionResult EditVehicleModel(VehicleModelViewModel vehicleModelViewModel)
         {
             return View(vehicleModelViewModel);
         }
 
-        // POST: VehicleModel/Edit/5
+        // POST: VehicleModel/Edit
         [HttpPost("VehicleModel/SubmitEditVehicleModel", Name = "submit-edit-vehicle-model")]
         public async Task<IActionResult> SubmitEditVehicleModel(VehicleModelViewModel vehicleModelViewModel)
         {
             try
             {
-                // TODO: Add update logic here
                 if (ModelState.IsValid)
                 {
-                    await vehicleModelService.UpdateVehicleModelAsync(mapper.Map<IVehicleModelModel>(vehicleModelViewModel));
+                    await vehicleModelService.UpdateVehicleModelAsync(mapper.Map<IVehicleModelDTO>(vehicleModelViewModel));
                     return RedirectToAction(nameof(VehicleModel));
                 }
                 else
@@ -114,14 +115,13 @@ namespace MyProject.MVC.Controllers
             return RedirectToAction(nameof(VehicleModel));
         }
 
-        // GET: VehicleModel/Delete/5
+        // GET: VehicleModel/Delete
         [HttpGet("VehicleModel/DeleteVehicleModel", Name = "delete-vehicle-model")]
         public async Task<IActionResult> DeleteVehicleModel(VehicleModelViewModel vehicleModelViewModel)
         {
             try
             {
-                // TODO: Add delete logic here
-                await vehicleModelService.DeleteVehicleModelAsync(mapper.Map<IVehicleModelModel>(vehicleModelViewModel));
+                await vehicleModelService.DeleteVehicleModelAsync(mapper.Map<IVehicleModelDTO>(vehicleModelViewModel));
 
                 return RedirectToAction(nameof(VehicleModel));
             }

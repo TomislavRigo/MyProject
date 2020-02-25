@@ -4,6 +4,7 @@ using MyProject.DTO.Common;
 using MyProject.VehicleRepository.Common;
 using MyProject.VehicleService.Common;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MyProject.VehicleService
@@ -17,7 +18,7 @@ namespace MyProject.VehicleService
             this.vehicleModelRepository = vehicleModelRepository;
         }
 
-        public async Task<IVehicleModelModel> GetAllModelsAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize)
+        public async Task<IDictionary<string, object>> GetAllModelsAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize)
         {
             var paging = new Paging()
             {
@@ -32,24 +33,33 @@ namespace MyProject.VehicleService
                 SortType = sortType
 
             };
-            return await vehicleModelRepository.GetAllModelsAsync(filter, paging);
+
+            var models = await vehicleModelRepository.GetAllModelsAsync(filter, paging);
+
+            var result = new Dictionary<string, object>()
+            {
+                {"models", models },
+                {"paging", paging }
+            };
+
+            return result;
         }
-        public async Task<IVehicleModelModel> GetVehicleModelAsync(Guid id)
+        public async Task<IVehicleModelDTO> GetVehicleModelAsync(Guid id)
         {
             return await vehicleModelRepository.GetVehicleModelAsync(id);
         }
 
-        public async Task<int> AddVehicleModelAsync(IVehicleModelModel vehicleModel)
+        public async Task<int> AddVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
             return await vehicleModelRepository.AddVehicleModelAsync(vehicleModel);
         }
 
-        public async Task<int> UpdateVehicleModelAsync(IVehicleModelModel vehicleModel)
+        public async Task<int> UpdateVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
             return await vehicleModelRepository.UpdateVehicleModelAsync(vehicleModel);
         }
 
-        public async Task<int> DeleteVehicleModelAsync(IVehicleModelModel vehicleModel)
+        public async Task<int> DeleteVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
             return await vehicleModelRepository.DeleteVehicleModelAsync(vehicleModel);
         }

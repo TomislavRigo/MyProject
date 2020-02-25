@@ -1,4 +1,4 @@
-﻿@model MyProject.MVC.Models.VehicleMakeViewModel
+﻿@model IEnumerable<MyProject.MVC.Models.VehicleMakeViewModel>
 
 @{
     ViewData["Title"] = "VehicleMake";
@@ -19,7 +19,7 @@
 <div>
     @ViewBag.Message
 </div>
-@if (Model != null)
+@if (Model.Any())
 {
     <table class="table">
         <thead>
@@ -33,7 +33,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.VehicleMakes)
+            @foreach (var item in Model)
             {
             <tr>
                 <td width="35%">

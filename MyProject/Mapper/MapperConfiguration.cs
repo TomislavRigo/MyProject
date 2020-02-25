@@ -11,20 +11,20 @@ namespace MyProject.MVC.Mapper
         public MapperConfiguration()
         {
             #region Database Objects
-            CreateMap<VehicleMake, IVehicleMakeModel>().ReverseMap();
-            CreateMap<VehicleModel, IVehicleModelModel>().ReverseMap();
-            CreateMap<VehicleMakeModel, VehicleMake>().ReverseMap();
-            CreateMap<VehicleModelModel, VehicleModel>().ReverseMap();
+            CreateMap<VehicleMake, IVehicleMakeDTO>().ReverseMap();
+            CreateMap<VehicleModel, IVehicleModelDTO>().ReverseMap();
+            CreateMap<VehicleMakeDTO, VehicleMake>().ReverseMap();
+            CreateMap<VehicleModelDTO, VehicleModel>().ReverseMap();
             #endregion
             #region Data Transfer Objects
-            CreateMap<VehicleMakeModel, IVehicleMakeModel>().ReverseMap();
-            CreateMap<VehicleModelModel, IVehicleModelModel>().ReverseMap();
+            CreateMap<VehicleMakeDTO, IVehicleMakeDTO>().ReverseMap();
+            CreateMap<VehicleModelDTO, IVehicleModelDTO>().ReverseMap();
             CreateMap<Filter, IFilter>().ReverseMap();
             CreateMap<Paging, IPaging>().ReverseMap();
             #endregion
             #region Data View Objects
-            CreateMap<IVehicleMakeModel, VehicleMakeViewModel>().ReverseMap();
-            CreateMap<IVehicleModelModel, VehicleModelViewModel>().ReverseMap();
+            CreateMap<IVehicleMakeDTO, VehicleMakeViewModel>().ReverseMap();
+            CreateMap<IVehicleModelDTO, VehicleModelViewModel>().ReverseMap();
             #endregion
             CreateMap<VehicleMake, VehicleMakeViewModel>().ReverseMap();
 

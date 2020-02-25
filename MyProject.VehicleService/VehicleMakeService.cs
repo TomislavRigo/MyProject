@@ -4,6 +4,7 @@ using MyProject.DTO.Common;
 using MyProject.VehicleRepository.Common;
 using MyProject.VehicleService.Common;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MyProject.VehicleService
@@ -17,12 +18,12 @@ namespace MyProject.VehicleService
             this.vehicleMakeRepository = vehicleMakeRepository;
         }
 
-        public async Task<IVehicleMakeModel> GetVehicleMakeAsync(Guid id)
+        public async Task<IVehicleMakeDTO> GetVehicleMakeAsync(Guid id)
         {
             return await vehicleMakeRepository.GetVehicleMakesAsync(id);
         }
 
-        public async Task<IVehicleMakeModel> GetAllMakesAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize) 
+        public async Task<IDictionary<string, object>> GetAllMakesAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize) 
         {
             var paging = new Paging()
             {
@@ -38,21 +39,29 @@ namespace MyProject.VehicleService
                 SortType = sortType
 
             };
-            var result = await vehicleMakeRepository.GetAllMakesAsync(filter, paging);
+
+            var makes = await vehicleMakeRepository.GetAllMakesAsync(filter, paging);
+
+            var result = new Dictionary<string, object>()
+            {
+                {"makes", makes},
+                {"paging", paging }
+            };
+
             return result;
         }
 
-        public async Task<int> AddVehicleMakeAsync(IVehicleMakeModel vehicleMake)
+        public async Task<int> AddVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
         {
             return await vehicleMakeRepository.AddVehicleMakeAsync(vehicleMake);
         }
 
-        public async Task<int> UpdateVehicleMakeAsync(IVehicleMakeModel vehicleMake)
+        public async Task<int> UpdateVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
         {
             return await vehicleMakeRepository.UpdateVehicleMakeAsync(vehicleMake);
         }
 
-        public async Task<int> DeleteVehicleMakeAsync(IVehicleMakeModel vehicleMake)
+        public async Task<int> DeleteVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
         {
             return await vehicleMakeRepository.DeleteVehicleMakeAsync(vehicleMake);
         }

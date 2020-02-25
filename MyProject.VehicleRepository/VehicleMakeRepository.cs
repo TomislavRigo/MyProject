@@ -4,6 +4,7 @@ using MyProject.DTO;
 using MyProject.DTO.Common;
 using MyProject.VehicleRepository.Common;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,10 +21,9 @@ namespace MyProject.VehicleRepository
             this.mapper = mapper;
         }
 
-        public async Task<IVehicleMakeModel> GetAllMakesAsync(IFilter filter, IPaging paging)
+        public async Task<IEnumerable<IVehicleMakeDTO>> GetAllMakesAsync(IFilter filter, IPaging paging)
         {
             var result = await genericRepository.GetAllModelsAsync<VehicleMake>();
-            var count = result.Count();
 
             if (!string.IsNullOrEmpty(filter.Search))
             {
@@ -31,6 +31,8 @@ namespace MyProject.VehicleRepository
                 v.Name.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase):
                 v.Abrv.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase));
             }
+
+            paging.TotalItemsCount = result.Count();
             
             if (filter.SortType == "asc")
             {
@@ -41,33 +43,28 @@ namespace MyProject.VehicleRepository
                 result = filter.SortBy == "Name" || filter.SortBy == null ? result.OrderByDescending(v => v.Name) : result.OrderByDescending(v => v.Abrv);
             }
 
-            var vehicleMakeList = new VehicleMakeModel()
-            {
-                VehicleMakes = result.Skip(paging.Skip).Take(paging.PageSize),
-                TotalItemsCount = count
-            };
-            return vehicleMakeList;
+            return mapper.Map<IEnumerable<IVehicleMakeDTO>>(result.Skip(paging.Skip).Take(paging.PageSize));
         }
 
-        public async Task<IVehicleMakeModel> GetVehicleMakesAsync(Guid id)
+        public async Task<IVehicleMakeDTO> GetVehicleMakesAsync(Guid id)
         {
             var result = await genericRepository.GetAsync<VehicleMake>(id);
-            return mapper.Map<IVehicleMakeModel>(result);
+            return mapper.Map<IVehicleMakeDTO>(result);
         }
 
-        public async Task<int> AddVehicleMakeAsync(IVehicleMakeModel vehicleMake)
+        public async Task<int> AddVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
         {
             var vehicle = mapper.Map<VehicleMake>(vehicleMake);
             return await genericRepository.AddAsync(vehicle);
         }
 
-        public async Task<int> UpdateVehicleMakeAsync(IVehicleMakeModel vehicleMake)
+        public async Task<int> UpdateVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
         {
             var vehicle = mapper.Map<VehicleMake>(vehicleMake);
             return await genericRepository.UpdateAsync(vehicle);
         }
 
-        public async Task<int> DeleteVehicleMakeAsync(IVehicleMakeModel vehicleMake)
+        public async Task<int> DeleteVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
         {
             var vehicle = mapper.Map<VehicleMake>(vehicleMake);
             return await genericRepository.DeleteAsync(vehicle);

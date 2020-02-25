@@ -1,13 +1,12 @@
 ﻿using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MyProject.DAL;
 using MyProject.MVC.Models;
 using MyProject.VehicleService.Common;
 using System.Threading.Tasks;
 using MyProject.DTO.Common;
 using System.Linq;
-using X.PagedList;
+using System.Collections.Generic;
 
 namespace MyProject.MVC.Controllers
 {
@@ -21,7 +20,6 @@ namespace MyProject.MVC.Controllers
             this.vehicleMakeService = vehicleMakeService;
             this.mapper = mapper;
         }
-
         // GET: VehicleMake
         [HttpGet("VehicleMake/VehicleMake", Name = "vehicle-make")]
         public async Task<IActionResult> VehicleMake(string searchBy, string search, string sortBy, string sortType, int? page, int? pageSize)
@@ -31,19 +29,24 @@ namespace MyProject.MVC.Controllers
             sortType = string.IsNullOrEmpty(sortType) ? "asc" : sortType;
 
             ViewBag.Sorting = sortType;
-            ViewBag.SortBy = !string.IsNullOrEmpty(sortBy) ? sortBy : "";
+            ViewBag.SortBy = !string.IsNullOrEmpty(sortBy) ? sortBy : "Name";
             ViewBag.Search = !string.IsNullOrEmpty(search) ? search : "";
             ViewBag.SearchBy = !string.IsNullOrEmpty(searchBy) ? searchBy : "Name";
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
 
-            var make = await vehicleMakeService.GetAllMakesAsync(searchBy, search, sortBy, sortType, (int)page, (int)pageSize);
-            var pageCount = make.TotalItemsCount / pageSize;
-            ViewBag.TotalPageCount = make.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+            var result = await vehicleMakeService.GetAllMakesAsync(searchBy, search, sortBy, sortType, (int)page, (int)pageSize);
 
-            if (make.VehicleMakes.Any())
+            var vehicleMakes = (IEnumerable<IVehicleMakeDTO>)result["makes"];
+            var paging = (IPaging)result["paging"];
+
+            var pageCount = paging.TotalItemsCount / pageSize;
+            ViewBag.TotalPageCount = paging.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+
+
+            if (vehicleMakes.Any())
             {
-                return View(mapper.Map<VehicleMakeViewModel>(make));
+                return View(mapper.Map<IEnumerable<VehicleMakeViewModel>>(vehicleMakes));
             }
             else
             {
@@ -65,10 +68,9 @@ namespace MyProject.MVC.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    var vehicleMake = mapper.Map<IVehicleMakeModel>(vehicleMakeViewModel);
+                    var vehicleMake = mapper.Map<IVehicleMakeDTO>(vehicleMakeViewModel);
                     vehicleMake.Id = Guid.NewGuid();
                     await vehicleMakeService.AddVehicleMakeAsync(vehicleMake);
                 }
@@ -100,7 +102,7 @@ namespace MyProject.MVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await vehicleMakeService.UpdateVehicleMakeAsync(mapper.Map<IVehicleMakeModel>(vehicleMakeViewModel));
+                    await vehicleMakeService.UpdateVehicleMakeAsync(mapper.Map<IVehicleMakeDTO>(vehicleMakeViewModel));
                     return RedirectToAction(nameof(VehicleMake));
                 }
                 else
@@ -118,8 +120,7 @@ namespace MyProject.MVC.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-                await vehicleMakeService.DeleteVehicleMakeAsync(mapper.Map<IVehicleMakeModel>(vehicleMakeViewModel));
+                await vehicleMakeService.DeleteVehicleMakeAsync(mapper.Map<IVehicleMakeDTO>(vehicleMakeViewModel));
 
                 return RedirectToAction(nameof(VehicleMake));
             }

@@ -1,25 +1,12 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MyProject.Models;
-using MyProject.MVC.Models;
-using MyProject.VehicleService.Common;
 
 namespace MyProject.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IVehicleMakeService vehicleMakeService;
-        private readonly IMapper mapper; 
-
-        public HomeController(IVehicleMakeService vehicleMakeService, IMapper mapper)
-        {
-            this.vehicleMakeService = vehicleMakeService;
-            this.mapper = mapper;
-        }
-
         public async Task<IActionResult> Index()
         {
             return View();

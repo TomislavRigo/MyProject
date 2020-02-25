@@ -8,7 +8,7 @@ namespace MyProject.DTO.Common
     {
         int PageNumber { get; set; }
         int PageSize { get; set; }
-        int TotalItemsCount { get; set; }
         int Skip { get; set; }
+        int TotalItemsCount { get; set; }
     }
 }
