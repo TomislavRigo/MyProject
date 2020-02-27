@@ -19,7 +19,7 @@
 <div>
     @ViewBag.Message
 </div>
-@if (Model.Any())
+@if (Model != null)
 {
     <table class="table">
         <thead>
@@ -85,7 +85,7 @@
         }
     </div>
 
-    <script>
+ <script>
         var sorting = function (sortBy, sortType, search, searchBy, page, pageSize) {
             if (sortType == "desc")
             {

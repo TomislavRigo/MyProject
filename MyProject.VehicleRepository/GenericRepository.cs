@@ -30,22 +30,22 @@ namespace MyProject.VehicleRepository
             return await dbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<int> AddAsync<T>(T entity) where T : class
+        public Task<int> AddAsync<T>(T entity) where T : class
         {
             dbContext.Set<T>().Add(entity);
-            return await dbContext.SaveChangesAsync();
+            return dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAsync<T>(T entity) where T : class
+        public Task<int> UpdateAsync<T>(T entity) where T : class
         {
             dbContext.Set<T>().Update(entity);
-            return await dbContext.SaveChangesAsync();
+            return dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync<T>(T entity) where T : class
+        public Task<int> DeleteAsync<T>(T entity) where T : class
         {
             dbContext.Set<T>().Remove(entity);
-            return await dbContext.SaveChangesAsync();
+            return dbContext.SaveChangesAsync();
         }
     }
 }

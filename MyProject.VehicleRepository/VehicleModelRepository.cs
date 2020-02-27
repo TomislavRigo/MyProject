@@ -51,22 +51,22 @@ namespace MyProject.VehicleRepository
             return mapper.Map<IVehicleModelDTO>(await genericRepository.GetAsync<VehicleModel>(id));
         }
 
-        public async Task<int> AddVehicleModelAsync(IVehicleModelDTO vehicleModel)
+        public Task<int> AddVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
             var model = mapper.Map<VehicleModel>(vehicleModel);
-            return await genericRepository.AddAsync(model);
+            return genericRepository.AddAsync(model);
         }
 
-        public async Task<int> UpdateVehicleModelAsync(IVehicleModelDTO vehicleModel)
+        public Task<int> UpdateVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
             var model = mapper.Map<VehicleModel>(vehicleModel);
-            return await genericRepository.UpdateAsync(model);
+            return genericRepository.UpdateAsync(model);
         }
 
-        public async Task<int> DeleteVehicleModelAsync(IVehicleModelDTO vehicleModel)
+        public Task<int> DeleteVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
             var model = mapper.Map<VehicleModel>(vehicleModel);
-            return await genericRepository.DeleteAsync(model);
+            return genericRepository.DeleteAsync(model);
         }
     }
 }
