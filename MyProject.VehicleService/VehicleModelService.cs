@@ -49,19 +49,19 @@ namespace MyProject.VehicleService
             return await vehicleModelRepository.GetVehicleModelAsync(id);
         }
 
-        public async Task<int> AddVehicleModelAsync(IVehicleModelDTO vehicleModel)
+        public Task<int> AddVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
-            return await vehicleModelRepository.AddVehicleModelAsync(vehicleModel);
+            return vehicleModelRepository.AddVehicleModelAsync(vehicleModel);
         }
 
-        public async Task<int> UpdateVehicleModelAsync(IVehicleModelDTO vehicleModel)
+        public Task<int> UpdateVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
-            return await vehicleModelRepository.UpdateVehicleModelAsync(vehicleModel);
+            return vehicleModelRepository.UpdateVehicleModelAsync(vehicleModel);
         }
 
-        public async Task<int> DeleteVehicleModelAsync(IVehicleModelDTO vehicleModel)
+        public Task<int> DeleteVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
-            return await vehicleModelRepository.DeleteVehicleModelAsync(vehicleModel);
+            return vehicleModelRepository.DeleteVehicleModelAsync(vehicleModel);
         }
     }
 }

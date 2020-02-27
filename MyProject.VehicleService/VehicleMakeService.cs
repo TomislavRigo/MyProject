@@ -51,19 +51,19 @@ namespace MyProject.VehicleService
             return result;
         }
 
-        public async Task<int> AddVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
+        public Task<int> AddVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
         {
-            return await vehicleMakeRepository.AddVehicleMakeAsync(vehicleMake);
+            return vehicleMakeRepository.AddVehicleMakeAsync(vehicleMake);
         }
 
-        public async Task<int> UpdateVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
+        public Task<int> UpdateVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
         {
-            return await vehicleMakeRepository.UpdateVehicleMakeAsync(vehicleMake);
+            return vehicleMakeRepository.UpdateVehicleMakeAsync(vehicleMake);
         }
 
-        public async Task<int> DeleteVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
+        public Task<int> DeleteVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
         {
-            return await vehicleMakeRepository.DeleteVehicleMakeAsync(vehicleMake);
+            return vehicleMakeRepository.DeleteVehicleMakeAsync(vehicleMake);
         }
     }
 }
