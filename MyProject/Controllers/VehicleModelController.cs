@@ -22,8 +22,9 @@ namespace MyProject.MVC.Controllers
             this.vehicleMakeService = vehicleMakeService;
             this.mapper = mapper;
         }
-        // GET: VehicleModel
-        public async Task<IActionResult> VehicleModel(string searchBy, string search, string sortBy, string sortType, int? page, int? pageSize)
+
+        [HttpGet("VehicleModel/VehicleModel", Name = "vehicle-model")]
+        public async Task<IActionResult> GetVehicleModelsAsync(string searchBy, string search, string sortBy, string sortType, int? page, int? pageSize)
         {
             page = page == null ? 1 : page;
             pageSize = pageSize == null ? 4 : pageSize;
@@ -63,7 +64,7 @@ namespace MyProject.MVC.Controllers
         }
 
         [HttpPost("VehicleModel/AddVehicleModel", Name = "submit-add-vehicle-model")]
-        public async Task<IActionResult> AddVehicleModel(VehicleModelViewModel vehicleModelViewModel)
+        public async Task<IActionResult> AddVehicleModelAsync(VehicleModelViewModel vehicleModelViewModel)
         {
             try
             {
@@ -79,7 +80,7 @@ namespace MyProject.MVC.Controllers
                 {
                     return RedirectToAction(nameof(AddVehicleModel));
                 }
-                return RedirectToAction(nameof(VehicleModel));
+                return RedirectToAction(nameof(GetVehicleModelsAsync));
             }
             catch
             {
@@ -96,34 +97,34 @@ namespace MyProject.MVC.Controllers
 
         // POST: VehicleModel/Edit
         [HttpPost("VehicleModel/SubmitEditVehicleModel", Name = "submit-edit-vehicle-model")]
-        public async Task<IActionResult> SubmitEditVehicleModel(VehicleModelViewModel vehicleModelViewModel)
+        public async Task<IActionResult> SubmitEditVehicleModelAsync(VehicleModelViewModel vehicleModelViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     await vehicleModelService.UpdateVehicleModelAsync(mapper.Map<IVehicleModelDTO>(vehicleModelViewModel));
-                    return RedirectToAction(nameof(VehicleModel));
+                    return RedirectToAction(nameof(GetVehicleModelsAsync));
                 }
                 else
-                    RedirectToAction(nameof(VehicleModel));
+                    RedirectToAction(nameof(GetVehicleModelsAsync));
             }
             catch
             {
-                return RedirectToAction(nameof(VehicleModel));
+                return RedirectToAction(nameof(GetVehicleModelsAsync));
             }
-            return RedirectToAction(nameof(VehicleModel));
+            return RedirectToAction(nameof(GetVehicleModelsAsync));
         }
 
         // GET: VehicleModel/Delete
         [HttpGet("VehicleModel/DeleteVehicleModel", Name = "delete-vehicle-model")]
-        public async Task<IActionResult> DeleteVehicleModel(VehicleModelViewModel vehicleModelViewModel)
+        public async Task<IActionResult> DeleteVehicleModelAsync(VehicleModelViewModel vehicleModelViewModel)
         {
             try
             {
                 await vehicleModelService.DeleteVehicleModelAsync(mapper.Map<IVehicleModelDTO>(vehicleModelViewModel));
 
-                return RedirectToAction(nameof(VehicleModel));
+                return RedirectToAction(nameof(GetVehicleModelsAsync));
             }
             catch
             {

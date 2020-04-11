@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MyProject.DAL;
 using MyProject.DTO;
 using MyProject.DTO.Common;
@@ -6,6 +7,7 @@ using MyProject.VehicleRepository.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MyProject.VehicleRepository
@@ -21,29 +23,11 @@ namespace MyProject.VehicleRepository
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<IVehicleMakeDTO>> GetAllMakesAsync(IFilter filter, IPaging paging)
+        public Task<IEnumerable<IVehicleMakeDTO>> GetAllMakesAsync(IFilter filter, IPaging paging)
         {
-            var result = await genericRepository.GetAllModelsAsync<VehicleMake>();
-
-            if (!string.IsNullOrEmpty(filter.Search))
-            {
-                result = result.Where(v => filter.SearchBy == "Name" ?
-                v.Name.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase):
-                v.Abrv.StartsWith(filter.Search, StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            paging.TotalItemsCount = result.Count();
-            
-            if (filter.SortType == "asc")
-            {
-                result = filter.SortBy == "Name" || filter.SortBy == null ? result.OrderBy(v => v.Name) : result.OrderBy(v => v.Abrv);             
-            }
-            else
-            {
-                result = filter.SortBy == "Name" || filter.SortBy == null ? result.OrderByDescending(v => v.Name) : result.OrderByDescending(v => v.Abrv);
-            }
-
-            return mapper.Map<IEnumerable<IVehicleMakeDTO>>(result.Skip(paging.Skip).Take(paging.PageSize));
+            var result = genericRepository.GetAllModelsAsync<VehicleMake>(CreateFilterExpression(filter.Search, filter.SearchBy), CreateOrderByExpression(filter.SortBy), paging.PageSize, paging.Skip, filter.SortType);
+            paging.TotalItemsCount = result.Item2;
+            return Task.FromResult(mapper.Map<IEnumerable<IVehicleMakeDTO>>(result.Item1));
         }
 
         public async Task<IVehicleMakeDTO> GetVehicleMakesAsync(Guid id)
@@ -68,6 +52,28 @@ namespace MyProject.VehicleRepository
         {
             var vehicle = mapper.Map<VehicleMake>(vehicleMake);
             return genericRepository.DeleteAsync(vehicle);
+        }
+        private static Expression<Func<VehicleMake, bool>> CreateFilterExpression(string search, string searchBy)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                return v => searchBy == "Name" ?
+                v.Name.StartsWith(search, StringComparison.InvariantCultureIgnoreCase) :
+                v.Abrv.StartsWith(search, StringComparison.InvariantCultureIgnoreCase);
+            }
+            return x => x.Name.StartsWith(String.Empty);
+        }
+
+        private static Expression<Func<VehicleMake, string>> CreateOrderByExpression(string sortBy)
+        {
+            if (sortBy == "Name" || sortBy == null)
+            {
+                return v => v.Name;
+            }
+            else
+            {
+                return v => v.Abrv;
+            }
         }
     }
 }

@@ -9,15 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject.DAL", "MyProject.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject.VehicleRepository.Common", "MyProject.VehicleRepository.Common\MyProject.VehicleRepository.Common.csproj", "{9C6CE510-88D8-4E97-8914-B289764B58A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject.VehicleService", "MyProject.VehicleService\MyProject.VehicleService.csproj", "{C3FADA87-5623-4D13-BFB4-6B410F1B3EE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject.VehicleService", "MyProject.VehicleService\MyProject.VehicleService.csproj", "{C3FADA87-5623-4D13-BFB4-6B410F1B3EE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject.VehicleService.Common", "MyProject.VehicleService.Common\MyProject.VehicleService.Common.csproj", "{8220EC7C-65AE-4E99-A411-D4BF36C74784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject.VehicleService.Common", "MyProject.VehicleService.Common\MyProject.VehicleService.Common.csproj", "{8220EC7C-65AE-4E99-A411-D4BF36C74784}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject.DTO", "MyProject.DTO\MyProject.DTO.csproj", "{D67A887A-57CA-45AE-A1E6-40A206AEC71F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject.DTO", "MyProject.DTO\MyProject.DTO.csproj", "{D67A887A-57CA-45AE-A1E6-40A206AEC71F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject.DTO.Common", "MyProject.DTO.Common\MyProject.DTO.Common.csproj", "{D749F3B4-5FE8-40E5-8744-5AD1E9B7032D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject.DTO.Common", "MyProject.DTO.Common\MyProject.DTO.Common.csproj", "{D749F3B4-5FE8-40E5-8744-5AD1E9B7032D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject.VehicleRepository", "MyProject.VehicleRepository\MyProject.VehicleRepository.csproj", "{8308B886-8017-43BA-835C-90058511F315}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject.VehicleRepository", "MyProject.VehicleRepository\MyProject.VehicleRepository.csproj", "{8308B886-8017-43BA-835C-90058511F315}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

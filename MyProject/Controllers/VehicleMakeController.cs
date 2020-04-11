@@ -22,7 +22,7 @@ namespace MyProject.MVC.Controllers
         }
         // GET: VehicleMake
         [HttpGet("VehicleMake/VehicleMake", Name = "vehicle-make")]
-        public async Task<IActionResult> VehicleMake(string searchBy, string search, string sortBy, string sortType, int? page, int? pageSize)
+        public async Task<IActionResult> GetVehicleMakeAsync(string searchBy, string search, string sortBy, string sortType, int? page, int? pageSize)
         {
             page = page == null ? 1 : page;
             pageSize = pageSize == null ? 5 : pageSize;
@@ -64,7 +64,7 @@ namespace MyProject.MVC.Controllers
 
         // POST: VehicleMake/AddVehicleMake
         [HttpPost]
-        public async Task<IActionResult> AddVehicleMake(VehicleMakeViewModel vehicleMakeViewModel)
+        public async Task<IActionResult> AddVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace MyProject.MVC.Controllers
                 {
                     return RedirectToAction(nameof(AddVehicleMake));
                 }
-                return RedirectToAction(nameof(VehicleMake));
+                return RedirectToAction(nameof(GetVehicleMakeAsync));
             }
             catch
             {
@@ -96,17 +96,17 @@ namespace MyProject.MVC.Controllers
 
         // POST: VehicleMake/Edit/5
         [HttpPost("VehicleMake/SubmitEditVehicleMake", Name = "submit-edit-vehicle-make")]
-        public async Task<IActionResult> SubmitEditVehicleMake(VehicleMakeViewModel vehicleMakeViewModel)
+        public async Task<IActionResult> SubmitEditVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     await vehicleMakeService.UpdateVehicleMakeAsync(mapper.Map<IVehicleMakeDTO>(vehicleMakeViewModel));
-                    return RedirectToAction(nameof(VehicleMake));
+                    return RedirectToAction(nameof(GetVehicleMakeAsync));
                 }
                 else
-                    RedirectToAction(nameof(VehicleMake));
+                    RedirectToAction(nameof(GetVehicleMakeAsync));
             }
             catch
             {
@@ -116,15 +116,15 @@ namespace MyProject.MVC.Controllers
         }
 
         [HttpGet("VehicleMake/DeleteVehicleMake", Name = "delete-vehicle-make")]
-        public async Task<IActionResult> DeleteVehicleMake(VehicleMakeViewModel vehicleMakeViewModel)
+        public async Task<IActionResult> DeleteVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
         {
             try
             {
                 await vehicleMakeService.DeleteVehicleMakeAsync(mapper.Map<IVehicleMakeDTO>(vehicleMakeViewModel));
 
-                return RedirectToAction(nameof(VehicleMake));
+                return RedirectToAction(nameof(GetVehicleMakeAsync));
             }
-            catch
+            catch(Exception e)
             {
                 return View();
             }
