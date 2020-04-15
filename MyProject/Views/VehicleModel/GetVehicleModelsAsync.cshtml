@@ -47,7 +47,7 @@
                         @Html.ActionLink("Edit", "EditVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv, VehicleMakeId = item.VehicleMakeId }, new {@style="color:#009999;"})
                     </td>
                     <td>
-                        @Html.ActionLink("Delete", "DeleteVehicleModel", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv }, new {@style="color:#009999;"})
+                        @Html.ActionLink("Delete", "DeleteVehicleModelAsync", new { Id = item.Id, Name = item.Name, Abrv = item.Abrv }, new {@style="color:#009999;"})
                     </td>
                 </tr>
             }

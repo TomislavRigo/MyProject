@@ -18,22 +18,8 @@ namespace MyProject.VehicleService
             this.vehicleModelRepository = vehicleModelRepository;
         }
 
-        public async Task<IDictionary<string, object>> GetAllModelsAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize)
-        {
-            var paging = new Paging()
-            {
-                PageNumber = page,
-                PageSize = pageSize
-            };
-            var filter = new Filter()
-            {
-                SearchBy = searchBy,
-                Search = search,
-                SortBy = sortBy,
-                SortType = sortType
-
-            };
-
+        public async Task<IDictionary<string, object>> GetAllModelsAsync(IFilter filter, IPaging paging)
+        { 
             var models = await vehicleModelRepository.GetAllModelsAsync(filter, paging);
 
             var result = new Dictionary<string, object>()

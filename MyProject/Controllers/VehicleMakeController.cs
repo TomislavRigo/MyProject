@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MyProject.DTO.Common;
 using System.Linq;
 using System.Collections.Generic;
+using MyProject.DTO;
 
 namespace MyProject.MVC.Controllers
 {
@@ -35,13 +36,28 @@ namespace MyProject.MVC.Controllers
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
 
-            var result = await vehicleMakeService.GetAllMakesAsync(searchBy, search, sortBy, sortType, (int)page, (int)pageSize);
+            var filter = new Filter()
+            {
+                SearchBy = searchBy,
+                Search = search,
+                SortBy = sortBy,
+                SortType = sortType
+
+            };
+
+            var paging = new Paging()
+            {
+                PageNumber = (int)page,
+                PageSize = (int)pageSize
+            };
+
+            var result = await vehicleMakeService.GetAllMakesAsync(filter, paging);
 
             var vehicleMakes = (IEnumerable<IVehicleMakeDTO>)result["makes"];
-            var paging = (IPaging)result["paging"];
+            var pagination = (IPaging)result["paging"];
 
-            var pageCount = paging.TotalItemsCount / pageSize;
-            ViewBag.TotalPageCount = paging.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+            var pageCount = pagination.TotalItemsCount / pageSize;
+            ViewBag.TotalPageCount = pagination.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
 
 
             if (vehicleMakes.Any())

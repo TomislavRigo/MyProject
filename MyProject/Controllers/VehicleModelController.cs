@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MyProject.DTO;
 using MyProject.DTO.Common;
 using MyProject.MVC.Models;
 using MyProject.VehicleService.Common;
@@ -36,13 +37,28 @@ namespace MyProject.MVC.Controllers
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
 
-            var result = await vehicleModelService.GetAllModelsAsync(searchBy, search, sortBy, sortType, (int)page, (int)pageSize);
+            var filter = new Filter()
+            {
+                SearchBy = searchBy,
+                Search = search,
+                SortBy = sortBy,
+                SortType = sortType
+
+            };
+
+            var paging = new Paging()
+            {
+                PageNumber = (int)page,
+                PageSize = (int)pageSize
+            };
+
+            var result = await vehicleModelService.GetAllModelsAsync(filter, paging);
 
             var vehicleModels = (IEnumerable<IVehicleModelDTO>)result["models"];
-            var paging = (IPaging)result["paging"];
+            var pagination = (IPaging)result["paging"];
 
-            var pageCount = paging.TotalItemsCount / pageSize;
-            ViewBag.TotalPageCount = paging.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+            var pageCount = pagination.TotalItemsCount / pageSize;
+            ViewBag.TotalPageCount = pagination.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
 
             if (vehicleModels.Any())
             {
@@ -53,7 +69,6 @@ namespace MyProject.MVC.Controllers
                 ViewBag.Message = "There are no Vehicle Models to show.";
                 return View();
             }
-
         }
 
         [HttpGet("VehicleModel/AddVehicleModel", Name = "add-vehicle-model")]
