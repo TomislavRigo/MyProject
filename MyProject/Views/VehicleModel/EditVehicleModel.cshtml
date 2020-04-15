@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="SubmitEditVehicleModel">
+        <form asp-action="SubmitEditVehicleModelAsync">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" hidden>
                 <label asp-for="Id" class="control-label"></label>
@@ -33,13 +33,13 @@
                 <span asp-validation-for="VehicleMakeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" style="background-color:darkcyan; border:0pt" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="GetVehicleModelsAsync" style="color:darkcyan">Back to List</a>
 </div>
 

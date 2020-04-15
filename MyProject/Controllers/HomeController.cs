@@ -7,7 +7,7 @@ namespace MyProject.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
             return View();
         }

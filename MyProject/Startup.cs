@@ -55,7 +55,7 @@ namespace MyProject
             builder.RegisterType<VehicleModelService>().As<IVehicleModelService>().InstancePerLifetimeScope();
             builder.RegisterType<VehicleMakeRepository>().As<IVehicleMakeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<VehicleModelRepository>().As<IVehicleModelRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<GenericRepository>().As<IGenericRepository>().SingleInstance();
+            builder.RegisterType<GenericRepository>().As<IGenericRepository>().InstancePerLifetimeScope();
 
             this.ApplicationContainer = builder.Build();
 

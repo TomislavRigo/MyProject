@@ -23,23 +23,8 @@ namespace MyProject.VehicleService
             return await vehicleMakeRepository.GetVehicleMakesAsync(id);
         }
 
-        public async Task<IDictionary<string, object>> GetAllMakesAsync(string searchBy, string search, string sortBy, string sortType, int page, int pageSize) 
+        public async Task<IDictionary<string, object>> GetAllMakesAsync(IFilter filter, IPaging paging) 
         {
-            var paging = new Paging()
-            {
-                PageNumber = page,
-                PageSize = pageSize
-            };
-
-            var filter = new Filter()
-            {
-                SearchBy = searchBy,
-                Search = search,
-                SortBy = sortBy,
-                SortType = sortType
-
-            };
-
             var makes = await vehicleMakeRepository.GetAllMakesAsync(filter, paging);
 
             var result = new Dictionary<string, object>()
