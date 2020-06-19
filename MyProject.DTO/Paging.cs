@@ -1,12 +1,14 @@
 ﻿using MyProject.DTO.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MyProject.DTO
 {
     public class Paging : IPaging
     {
+        public Paging(int? pageNumber, int? pageSize)
+        {
+            PageNumber = pageNumber ?? 1;
+            PageSize = pageSize ?? 5;
+        }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int Skip
