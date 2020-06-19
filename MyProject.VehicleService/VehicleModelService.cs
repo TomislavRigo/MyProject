@@ -1,6 +1,4 @@
-﻿using MyProject.DAL;
-using MyProject.DTO;
-using MyProject.DTO.Common;
+﻿using MyProject.DTO.Common;
 using MyProject.VehicleRepository.Common;
 using MyProject.VehicleService.Common;
 using System;

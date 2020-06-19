@@ -1,3 +1,4 @@
 **/bin
 **/obj
 .vs/
+MyProject.VehicleService/MyProject.VehicleService.csproj.user

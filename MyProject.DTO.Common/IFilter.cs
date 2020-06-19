@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyProject.DTO.Common
+﻿namespace MyProject.DTO.Common
 {
     public interface IFilter
     {
