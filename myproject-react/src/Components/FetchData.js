@@ -2,7 +2,7 @@ async function FetchData() {
   let response = [];
   let data = [];
 
-  response = await fetch("/VehicleModel");
+  response = await fetch("/VehicleMake");
   data = await response.json();
   return data.VehicleMakes;
 }
