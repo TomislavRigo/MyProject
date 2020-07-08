@@ -16,6 +16,9 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Content Include="jsconfig.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -29,9 +32,10 @@
     <Content Include="src\index.js" />
     <Content Include="src\serviceWorker.js" />
     <Content Include="src\setupTests.js" />
-    <Content Include="src\Components\FetchData.js" />
     <Content Include="src\Components\Table.js" />
-    <Content Include="src\Stores\FilterStore.js" />
+    <Content Include="src\Components\Store.js">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public" />

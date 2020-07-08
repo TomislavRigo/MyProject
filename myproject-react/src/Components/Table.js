@@ -1,17 +1,19 @@
 import React from "react";
-import FetchData from "./FetchData";
+import Store from "./Store";
+import { observer } from "mobx";
+import { inject } from "mobx-react";
 
 export default class Table extends React.Component {
-  state = {
-    loading: true,
-    makes: [],
-    url: null,
-  };
 
-  async componentDidMount() {
-    let data = await FetchData();
-    console.log(data);
-    this.setState({ makes: data, loading: false });
+    state = {
+        loading: true,
+        makes: [],
+        url: null,
+    };
+    async componentDidMount() {
+        const data = await Store.get("/VehicleMake");
+        console.log(data);
+        this.setState({ makes: data, loading: false });
   }
 
   render() {
