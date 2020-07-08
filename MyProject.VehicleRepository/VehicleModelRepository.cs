@@ -24,9 +24,9 @@ namespace MyProject.VehicleRepository
             this.mapper = mapper;
         }
 
-        public Task<IEnumerable<IVehicleModelDTO>> GetAllModelsAsync(IFilter filter, IPaging paging)
+        public Task<IEnumerable<IVehicleModelDTO>> GetAllModelsAsync(IFilter filter, IPaging paging, ISorting sorting)
         {
-            var result = genericRepository.GetAllModelsAsync<VehicleModel>(CreateFilterExpression(filter.Search, filter.SearchBy), CreateOrderByExpression(filter.SortBy), paging.PageSize, paging.Skip, filter.SortType);
+            var result = genericRepository.GetAllModelsAsync<VehicleModel>(CreateFilterExpression(filter.Search, filter.SearchBy), CreateOrderByExpression(sorting.SortBy), paging.PageSize, paging.Skip, sorting.SortType);
             paging.TotalItemsCount = result.Item2;
             return Task.FromResult(mapper.Map<IEnumerable<IVehicleModelDTO>>(result.Item1));
         }

@@ -31,10 +31,11 @@ namespace MyProject.WebApi.Controllers
         [HttpGet]
         public async Task<string> GetAsync([FromQuery] QueryParams queryParams)
         {
-            var filter = new Filter(queryParams.SearchBy, queryParams.Search, queryParams.SortBy, queryParams.SortType);
+            var filter = new Filter(queryParams.SearchBy, queryParams.Search);
+            var sorting = new Sorting(queryParams.SortBy, queryParams.SortType);
             var paging = new Paging(queryParams.PageNumber, queryParams.PageSize);
 
-            var result = await vehicleMakeService.GetAllMakesAsync(filter, paging);
+            var result = await vehicleMakeService.GetAllMakesAsync(filter, paging, sorting);
 
             var vehicleMakes = (IEnumerable<IVehicleMakeDTO>)result["makes"];
             var pagination = (IPaging)result["paging"];
@@ -43,6 +44,7 @@ namespace MyProject.WebApi.Controllers
             obj.VehicleMakes = vehicleMakes;
             obj.Pagination = pagination;
             obj.Filter = filter;
+            obj.Sorting = sorting;
 
             return JsonSerializer.Serialize(obj);
         }

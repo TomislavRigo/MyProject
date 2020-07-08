@@ -9,7 +9,7 @@ namespace MyProject.VehicleService.Common
 {
     public interface IVehicleModelService
     {
-        Task<IDictionary<string, object>> GetAllModelsAsync(IFilter filter, IPaging paging);
+        Task<IDictionary<string, object>> GetAllModelsAsync(IFilter filter, IPaging paging, ISorting sorting);
         Task<IVehicleModelDTO> GetVehicleModelAsync(Guid id);
         Task<int> AddVehicleModelAsync(IVehicleModelDTO vehicleModel);
         Task<int> UpdateVehicleModelAsync(IVehicleModelDTO vehicleModel);
