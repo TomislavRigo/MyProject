@@ -23,17 +23,9 @@ namespace MyProject.VehicleService
             return await vehicleMakeRepository.GetVehicleMakesAsync(id);
         }
 
-        public async Task<IDictionary<string, object>> GetAllMakesAsync(IFilter filter, IPaging paging, ISorting sorting) 
+        public async Task<IEnumerable<IVehicleMakeDTO>> GetAllMakesAsync(IFilter filter, IPaging paging, ISorting sorting) 
         {
-            var makes = await vehicleMakeRepository.GetAllMakesAsync(filter, paging, sorting);
-
-            var result = new Dictionary<string, object>()
-            {
-                {"makes", makes},
-                {"paging", paging }
-            };
-
-            return result;
+            return await vehicleMakeRepository.GetAllMakesAsync(filter, paging, sorting);
         }
 
         public Task<int> AddVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
@@ -46,9 +38,9 @@ namespace MyProject.VehicleService
             return vehicleMakeRepository.UpdateVehicleMakeAsync(vehicleMake);
         }
 
-        public Task<int> DeleteVehicleMakeAsync(IVehicleMakeDTO vehicleMake)
+        public Task<int> DeleteVehicleMakeAsync(Guid id)
         {
-            return vehicleMakeRepository.DeleteVehicleMakeAsync(vehicleMake);
+            return vehicleMakeRepository.DeleteVehicleMakeAsync(id);
         }
     }
 }

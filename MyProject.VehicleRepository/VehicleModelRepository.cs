@@ -13,44 +13,40 @@ using System.Threading.Tasks;
 
 namespace MyProject.VehicleRepository
 {
-    public class VehicleModelRepository : IVehicleModelRepository
+    public class VehicleModelRepository : GenericRepository<VehicleModel>, IVehicleModelRepository
     {
-        private readonly IGenericRepository genericRepository;
         private readonly IMapper mapper;
 
-        public VehicleModelRepository(IGenericRepository genericRepository, IMapper mapper)
+        public VehicleModelRepository(IMapper mapper, VehicleDbContext dbContext) : base(dbContext)
         {
-            this.genericRepository = genericRepository;
             this.mapper = mapper;
         }
 
         public Task<IEnumerable<IVehicleModelDTO>> GetAllModelsAsync(IFilter filter, IPaging paging, ISorting sorting)
         {
-            var result = genericRepository.GetAllModelsAsync<VehicleModel>(CreateFilterExpression(filter.Search, filter.SearchBy), CreateOrderByExpression(sorting.SortBy), paging.PageSize, paging.Skip, sorting.SortType);
-            paging.TotalItemsCount = result.Item2;
-            return Task.FromResult(mapper.Map<IEnumerable<IVehicleModelDTO>>(result.Item1));
+            var result = base.GetAllModelsAsync(CreateFilterExpression(filter.Search, filter.SearchBy), CreateOrderByExpression(sorting.SortBy), paging, sorting.SortType);
+            return Task.FromResult(mapper.Map<IEnumerable<IVehicleModelDTO>>(result));
         }
         public async Task<IVehicleModelDTO> GetVehicleModelAsync(Guid id)
         {
-            return mapper.Map<IVehicleModelDTO>(await genericRepository.GetAsync<VehicleModel>(id));
+            return mapper.Map<IVehicleModelDTO>(await base.GetAsync(id));
         }
 
         public Task<int> AddVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
             var model = mapper.Map<VehicleModel>(vehicleModel);
-            return genericRepository.AddAsync(model);
+            return base.AddAsync(model);
         }
 
         public Task<int> UpdateVehicleModelAsync(IVehicleModelDTO vehicleModel)
         {
             var model = mapper.Map<VehicleModel>(vehicleModel);
-            return genericRepository.UpdateAsync(model);
+            return base.UpdateAsync(model);
         }
 
-        public Task<int> DeleteVehicleModelAsync(IVehicleModelDTO vehicleModel)
+        public Task<int> DeleteVehicleModelAsync(Guid id)
         {
-            var model = mapper.Map<VehicleModel>(vehicleModel);
-            return genericRepository.DeleteAsync(model);
+            return base.DeleteAsync(id);
         }
 
         private static Expression<Func<VehicleModel, bool>> CreateFilterExpression(string search, string searchBy)

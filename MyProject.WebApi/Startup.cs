@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyProject.DAL;
+using MyProject.DTO.AutoMapperProfiles;
 using MyProject.VehicleRepository;
 using MyProject.VehicleRepository.Common;
 using MyProject.VehicleService;
@@ -32,17 +33,14 @@ namespace MyProject.WebApi
             services.AddDbContext<VehicleDbContext>
                 (options => options.UseSqlServer("Server=localhost;Database=TestDatabase;user id='sa';password='yourStrong(!)Password';Trusted_Connection=False;"));
             services.AddControllers();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(AutoMapperProfileDTO));
             // Add services to the collection. Don't build or return
             // any IServiceProvider or the ConfigureContainer method
             // won't get called.
             var builder = new ContainerBuilder();
             builder.Populate(services);
-            builder.RegisterType<VehicleMakeService>().As<IVehicleMakeService>().InstancePerLifetimeScope();
-            builder.RegisterType<VehicleModelService>().As<IVehicleModelService>().InstancePerLifetimeScope();
-            builder.RegisterType<VehicleMakeRepository>().As<IVehicleMakeRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<VehicleModelRepository>().As<IVehicleModelRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<GenericRepository>().As<IGenericRepository>().InstancePerLifetimeScope();
+            ServiceDependencyBindings.RegisterServices(builder);
+            RepositoryDependencyBindings.RegisterServices(builder);
 
             this.ApplicationContainer = builder.Build();
             return new AutofacServiceProvider(this.ApplicationContainer);

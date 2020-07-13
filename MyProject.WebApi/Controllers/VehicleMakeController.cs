@@ -35,14 +35,9 @@ namespace MyProject.WebApi.Controllers
             var sorting = new Sorting(queryParams.SortBy, queryParams.SortType);
             var paging = new Paging(queryParams.PageNumber, queryParams.PageSize);
 
-            var result = await vehicleMakeService.GetAllMakesAsync(filter, paging, sorting);
-
-            var vehicleMakes = (IEnumerable<IVehicleMakeDTO>)result["makes"];
-            var pagination = (IPaging)result["paging"];
-
             dynamic obj = new ExpandoObject();
-            obj.VehicleMakes = vehicleMakes;
-            obj.Pagination = pagination;
+            obj.VehicleMakes = await vehicleMakeService.GetAllMakesAsync(filter, paging, sorting);
+            obj.Pagination = paging;
             obj.Filter = filter;
             obj.Sorting = sorting;
 
@@ -74,17 +69,18 @@ namespace MyProject.WebApi.Controllers
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete]
-        public async Task DeleteAsync([FromQuery] QueryParams queryParams)
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<string> GetDeleteAsync(Guid id)
         {
-            var vehicleMake = new VehicleMakeDTO()
-            {
-                Id = queryParams.Id,
-                Name = queryParams.Name,
-                Abrv = queryParams.Abrv
-            };
+            return JsonSerializer.Serialize(await vehicleMakeService.GetVehicleMakeAsync(id));
+        }
 
-            await vehicleMakeService.DeleteVehicleMakeAsync(vehicleMake);
+        [HttpPost]
+        [Route("{id}")]
+        public async Task DeleteAsync(Guid id)
+        {
+            await vehicleMakeService.DeleteVehicleMakeAsync(id);
         }
     }
 }

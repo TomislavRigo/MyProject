@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyProject.DAL;
+using MyProject.DTO.Common;
 using MyProject.VehicleRepository.Common;
 using System;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyProject.VehicleRepository
 {
-    public class GenericRepository : IGenericRepository
+    public abstract class GenericRepository<TModel> : IGenericRepository<TModel> where TModel : class
     {
         private readonly VehicleDbContext dbContext;
 
@@ -17,35 +18,35 @@ namespace MyProject.VehicleRepository
             this.dbContext = dbContext;
         }
 
-        public (IQueryable<T>, int) GetAllModelsAsync<T>(Expression<Func<T, bool>> match, Expression<Func<T, string>> orderByExpression, int take, int skip, string sortType) where T : class
+        public IQueryable<TModel> GetAllModelsAsync(Expression<Func<TModel, bool>> match, Expression<Func<TModel, string>> orderByExpression, IPaging paging, string sortType)
         {
             var vehicles = sortType == "asc" ?
-                dbContext.Set<T>().AsNoTracking().Where(match).OrderBy(orderByExpression).Skip(skip).Take(take) :
-                dbContext.Set<T>().AsNoTracking().Where(match).OrderByDescending(orderByExpression).Skip(skip).Take(take);
-            var vehiclesCount = dbContext.Set<T>().Where(match).AsNoTracking().Count();
-            return (vehicles, vehiclesCount);
+                dbContext.Set<TModel>().AsNoTracking().Where(match).OrderBy(orderByExpression).Skip(paging.Skip).Take(paging.PageSize) :
+                dbContext.Set<TModel>().AsNoTracking().Where(match).OrderByDescending(orderByExpression).Skip(paging.Skip).Take(paging.PageSize);
+            paging.TotalItemsCount = dbContext.Set<TModel>().Where(match).AsNoTracking().Count();
+            return vehicles;
         }
 
-        public async Task<T> GetAsync<T>(Guid id) where T : class
+        public async Task<TModel> GetAsync(Guid id)
         {
-            return await dbContext.Set<T>().FindAsync(id);
+            return await dbContext.Set<TModel>().FindAsync(id);
         }
 
-        public async Task<int> AddAsync<T>(T entity) where T : class
+        public async Task<int> AddAsync(TModel entity)
         {
-            dbContext.Set<T>().Add(entity);
+            dbContext.Set<TModel>().Add(entity);
             return await dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAsync<T>(T entity) where T : class
+        public async Task<int> UpdateAsync(TModel entity)
         {
-            dbContext.Set<T>().Update(entity);
+            dbContext.Set<TModel>().Update(entity);
             return await dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync<T>(T entity) where T : class
+        public async Task<int> DeleteAsync(Guid id)
         {
-            dbContext.Set<T>().Remove(entity);
+            dbContext.Set<TModel>().Remove(dbContext.Find<TModel>(id));
             return await dbContext.SaveChangesAsync();
         }
     }
