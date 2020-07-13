@@ -1,16 +1,17 @@
-﻿using System;
+﻿using MyProject.DTO.Common;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MyProject.VehicleRepository.Common
 {
-    public interface IGenericRepository
+    public interface IGenericRepository<TModel> where TModel : class
     {
-        Task<T> GetAsync<T>(Guid id) where T : class;
-        (IQueryable<T>, int) GetAllModelsAsync<T>(Expression<Func<T, bool>> match, Expression<Func<T, string>> orderByExpression, int take, int skip, string sortType) where T : class;
-        Task<int> AddAsync<T>(T entity) where T : class;
-        Task<int> UpdateAsync<T>(T entity) where T : class;
-        Task<int> DeleteAsync<T>(T entity) where T : class;
+        Task<TModel> GetAsync(Guid id);
+        IQueryable<TModel> GetAllModelsAsync(Expression<Func<TModel, bool>> match, Expression<Func<TModel, string>> orderByExpression, IPaging paging, string sortType);
+        Task<int> AddAsync(TModel entity);
+        Task<int> UpdateAsync(TModel entity);
+        Task<int> DeleteAsync(Guid id);
     }
 }

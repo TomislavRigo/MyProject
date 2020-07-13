@@ -1,6 +1,4 @@
-﻿using MyProject.DAL;
-using MyProject.DTO;
-using MyProject.DTO.Common;
+﻿using MyProject.DTO.Common;
 using MyProject.VehicleRepository.Common;
 using MyProject.VehicleService.Common;
 using System;
@@ -18,17 +16,9 @@ namespace MyProject.VehicleService
             this.vehicleModelRepository = vehicleModelRepository;
         }
 
-        public async Task<IDictionary<string, object>> GetAllModelsAsync(IFilter filter, IPaging paging)
-        { 
-            var models = await vehicleModelRepository.GetAllModelsAsync(filter, paging);
-
-            var result = new Dictionary<string, object>()
-            {
-                {"models", models },
-                {"paging", paging }
-            };
-
-            return result;
+        public async Task<IEnumerable<IVehicleModelDTO>> GetAllModelsAsync(IFilter filter, IPaging paging, ISorting sorting)
+        {
+            return await vehicleModelRepository.GetAllModelsAsync(filter, paging, sorting);
         }
         public async Task<IVehicleModelDTO> GetVehicleModelAsync(Guid id)
         {
@@ -45,9 +35,9 @@ namespace MyProject.VehicleService
             return vehicleModelRepository.UpdateVehicleModelAsync(vehicleModel);
         }
 
-        public Task<int> DeleteVehicleModelAsync(IVehicleModelDTO vehicleModel)
+        public Task<int> DeleteVehicleModelAsync(Guid id)
         {
-            return vehicleModelRepository.DeleteVehicleModelAsync(vehicleModel);
+            return vehicleModelRepository.DeleteVehicleModelAsync(id);
         }
     }
 }
