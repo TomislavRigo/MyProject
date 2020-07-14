@@ -33,7 +33,7 @@
     <Content Include="src\serviceWorker.js" />
     <Content Include="src\setupTests.js" />
     <Content Include="src\Components\Table.js" />
-    <Content Include="src\Components\Store.js">
+    <Content Include="src\Stores\Store.js">
       <SubType>Code</SubType>
     </Content>
   </ItemGroup>
