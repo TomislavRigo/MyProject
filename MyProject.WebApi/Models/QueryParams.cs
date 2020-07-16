@@ -5,6 +5,7 @@ namespace MyProject.WebApi.Models
     public class QueryParams
     {
             public Guid Id { get; set; }
+            public Guid VehicleMakeId { get; set; }
             public string Name { get; set; }
             public string Abrv { get; set; }
             public string SearchBy { get; set; }
