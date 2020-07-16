@@ -31,7 +31,7 @@ namespace MyProject.WebApi.Controllers
 
         // GET: api/VehicleModel
         [HttpGet]
-        public async Task<(HttpResponseMessage, string)> GetAsync([FromQuery] QueryParams queryParams)
+        public async Task<IActionResult> GetAsync([FromQuery] QueryParams queryParams)
         { 
 
             var filter = new Filter(queryParams.SearchBy, queryParams.Search);
@@ -44,7 +44,7 @@ namespace MyProject.WebApi.Controllers
             obj.Filter = filter;
             obj.Sorting = sorting;
 
-            return (new HttpResponseMessage(HttpStatusCode.OK), JsonSerializer.Serialize(obj));
+            return Ok(JsonSerializer.Serialize(obj));
         }
 
         // POST: api/VehicleModel
@@ -62,11 +62,11 @@ namespace MyProject.WebApi.Controllers
         // PUT: api/VehicleModel/5
         [HttpGet]
         [Route("Edit")]
-        public async Task<(HttpResponseMessage, string)> GetEditAsync([FromQuery] Guid id)
+        public async Task<IActionResult> GetEditAsync([FromQuery] Guid id)
         {
             var result = await vehicleModelService.GetVehicleModelAsync(id);
 
-            return (new HttpResponseMessage(HttpStatusCode.OK), JsonSerializer.Serialize(result));
+            return Ok(JsonSerializer.Serialize(result));
         }
 
         [HttpPut]
@@ -82,9 +82,9 @@ namespace MyProject.WebApi.Controllers
         // DELETE: api/ApiWithActions/5
         [HttpGet]
         [Route("Delete")]
-        public async Task<(HttpResponseMessage, string)> GetDeleteAsync(Guid id)
+        public async Task<IActionResult> GetDeleteAsync(Guid id)
         {
-            return (new HttpResponseMessage(HttpStatusCode.OK), JsonSerializer.Serialize(await vehicleModelService.GetVehicleModelAsync(id)));
+            return Ok(JsonSerializer.Serialize(await vehicleModelService.GetVehicleModelAsync(id)));
         }
 
         [HttpPost]

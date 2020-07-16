@@ -2,6 +2,7 @@
 using System.Dynamic;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -28,7 +29,7 @@ namespace MyProject.WebApi.Controllers
 
         // GET: api/VehicleMake
         [HttpGet]
-        public async Task<(HttpResponseMessage, string)> GetAsync([FromQuery] QueryParams queryParams)
+        public async Task<IActionResult> GetAsync([FromQuery] QueryParams queryParams)
         {
             var filter = new Filter(queryParams.SearchBy, queryParams.Search);
             var sorting = new Sorting(queryParams.SortBy, queryParams.SortType);
@@ -40,9 +41,8 @@ namespace MyProject.WebApi.Controllers
             obj.Filter = filter;
             obj.Sorting = sorting;
 
-            return (new HttpResponseMessage(HttpStatusCode.OK), JsonSerializer.Serialize(obj));
+            return Ok(JsonSerializer.Serialize(obj));
         }
-
         // POST: api/VehicleMake
         [HttpPost]
         [Route("Add")]
@@ -58,11 +58,11 @@ namespace MyProject.WebApi.Controllers
         // PUT: api/VehicleMake/5
         [HttpGet]
         [Route("Edit")]
-        public async Task<(HttpResponseMessage, string)> GetUpdateAsync([FromQuery] Guid id)
+        public async Task<IActionResult> GetUpdateAsync([FromQuery] Guid id)
         {
             var result = await vehicleMakeService.GetVehicleMakeAsync(id);
 
-            return (new HttpResponseMessage(HttpStatusCode.OK), JsonSerializer.Serialize(result));
+            return Ok(JsonSerializer.Serialize(result));
         }
 
         [HttpPost]
@@ -78,9 +78,9 @@ namespace MyProject.WebApi.Controllers
         // DELETE: api/ApiWithActions/5
         [HttpGet]
         [Route("Delete")]
-        public async Task<(HttpResponseMessage, string)> GetDeleteAsync(Guid id)
+        public async Task<IActionResult> GetDeleteAsync(Guid id)
         {
-            return (new HttpResponseMessage(HttpStatusCode.OK), JsonSerializer.Serialize(await vehicleMakeService.GetVehicleMakeAsync(id)));
+            return Ok(JsonSerializer.Serialize(await vehicleMakeService.GetVehicleMakeAsync(id)));
         }
 
         [HttpPost]
