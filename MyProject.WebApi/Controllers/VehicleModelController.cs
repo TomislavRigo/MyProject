@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -29,7 +31,7 @@ namespace MyProject.WebApi.Controllers
 
         // GET: api/VehicleModel
         [HttpGet]
-        public async Task<string> GetAsync([FromQuery] QueryParams queryParams)
+        public async Task<(HttpResponseMessage, string)> GetAsync([FromQuery] QueryParams queryParams)
         { 
 
             var filter = new Filter(queryParams.SearchBy, queryParams.Search);
@@ -42,51 +44,55 @@ namespace MyProject.WebApi.Controllers
             obj.Filter = filter;
             obj.Sorting = sorting;
 
-            return JsonSerializer.Serialize(obj);
+            return (new HttpResponseMessage(HttpStatusCode.OK), JsonSerializer.Serialize(obj));
         }
 
         // POST: api/VehicleModel
         [HttpPost]
-        public async Task PostAsync([FromQuery] QueryParams queryParams)
+        public async Task<HttpResponseMessage> PostAsync([FromQuery] QueryParams queryParams)
         {
-            IVehicleModelDTO vehicleModel = new VehicleModelDTO()
-            {
-                Id = Guid.NewGuid(),
-                VehicleMakeId = queryParams.Id,
-                Name = queryParams.Name,
-                Abrv = queryParams.Abrv,
-                VehicleMake = await vehicleMakeService.GetVehicleMakeAsync(queryParams.Id)
-            };
+            var vehicleModel = mapper.Map<IVehicleModelDTO>(queryParams);
+            vehicleModel.VehicleMakeId = queryParams.VehicleMakeId;
+            vehicleModel.Id = Guid.NewGuid();
+
             await vehicleModelService.AddVehicleModelAsync(vehicleModel);
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
         // PUT: api/VehicleModel/5
-        [HttpPut]
-        public async Task Put([FromQuery] QueryParams queryParams)
+        [HttpGet]
+        [Route("Edit")]
+        public async Task<(HttpResponseMessage, string)> GetEditAsync([FromQuery] Guid id)
         {
-            var vehicleModel = new VehicleModelDTO()
-            {
-                Id = queryParams.Id,
-                Name = queryParams.Name,
-                Abrv = queryParams.Abrv
-            };
+            var result = await vehicleModelService.GetVehicleModelAsync(id);
+
+            return (new HttpResponseMessage(HttpStatusCode.OK), JsonSerializer.Serialize(result));
+        }
+
+        [HttpPut]
+        [Route("Edit")]
+        public async Task<HttpResponseMessage> PutEditAsync([FromQuery] QueryParams queryParams)
+        {
+            var vehicleModel = mapper.Map<IVehicleModelDTO>(queryParams);
 
             await vehicleModelService.UpdateVehicleModelAsync(vehicleModel);
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpGet]
-        [Route("{id}")]
-        public async Task<string> GetDeleteAsync(Guid id)
+        [Route("Delete")]
+        public async Task<(HttpResponseMessage, string)> GetDeleteAsync(Guid id)
         {
-            return JsonSerializer.Serialize(await vehicleModelService.GetVehicleModelAsync(id));
+            return (new HttpResponseMessage(HttpStatusCode.OK), JsonSerializer.Serialize(await vehicleModelService.GetVehicleModelAsync(id)));
         }
 
         [HttpPost]
-        [Route("{id}")]
-        public async Task DeleteAsync(Guid id)
+        [Route("Delete")]
+        public async Task<HttpResponseMessage> DeleteAsync(Guid id)
         {
             await vehicleModelService.DeleteVehicleModelAsync(id);
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }
 }

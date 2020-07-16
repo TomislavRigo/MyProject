@@ -9,10 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using MyProject.DAL;
 using MyProject.DTO.AutoMapperProfiles;
 using MyProject.VehicleRepository;
-using MyProject.VehicleRepository.Common;
 using MyProject.VehicleService;
-using MyProject.VehicleService.Common;
 using System;
+using MyProject.AutoMapperProfilesWebApi;
 
 namespace MyProject.WebApi
 {
@@ -33,7 +32,7 @@ namespace MyProject.WebApi
             services.AddDbContext<VehicleDbContext>
                 (options => options.UseSqlServer("Server=localhost;Database=TestDatabase;user id='sa';password='yourStrong(!)Password';Trusted_Connection=False;"));
             services.AddControllers();
-            services.AddAutoMapper(typeof(AutoMapperProfileDTO));
+            services.AddAutoMapper(typeof(AutoMapperProfileDTO), typeof(AutoMapperProfileWebApi));
             // Add services to the collection. Don't build or return
             // any IServiceProvider or the ConfigureContainer method
             // won't get called.
